@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.association.dao.ApplyJoinAssocMapper">
+  <resultMap id="BaseResultMap" type="com.example.association.pojo.ApplyJoinAssoc">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="applicant_id" jdbcType="INTEGER" property="applicantId" />
+    <result column="assoc_id" jdbcType="INTEGER" property="assocId" />
+    <result column="app_status" jdbcType="INTEGER" property="appStatus" />
+    <result column="app_time" jdbcType="TIMESTAMP" property="appTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, applicant_id, assoc_id, app_status, app_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from apply_join_assoc
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from apply_join_assoc
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.association.pojo.ApplyJoinAssoc">
+    insert into apply_join_assoc (id, applicant_id, assoc_id, 
+      app_status, app_time)
+    values (#{id,jdbcType=INTEGER}, #{applicantId,jdbcType=INTEGER}, #{assocId,jdbcType=INTEGER}, 
+      #{appStatus,jdbcType=INTEGER}, #{appTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.association.pojo.ApplyJoinAssoc">
+    insert into apply_join_assoc
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="applicantId != null">
+        applicant_id,
+      </if>
+      <if test="assocId != null">
+        assoc_id,
+      </if>
+      <if test="appStatus != null">
+        app_status,
+      </if>
+      <if test="appTime != null">
+        app_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="applicantId != null">
+        #{applicantId,jdbcType=INTEGER},
+      </if>
+      <if test="assocId != null">
+        #{assocId,jdbcType=INTEGER},
+      </if>
+      <if test="appStatus != null">
+        #{appStatus,jdbcType=INTEGER},
+      </if>
+      <if test="appTime != null">
+        #{appTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.association.pojo.ApplyJoinAssoc">
+    update apply_join_assoc
+    <set>
+      <if test="applicantId != null">
+        applicant_id = #{applicantId,jdbcType=INTEGER},
+      </if>
+      <if test="assocId != null">
+        assoc_id = #{assocId,jdbcType=INTEGER},
+      </if>
+      <if test="appStatus != null">
+        app_status = #{appStatus,jdbcType=INTEGER},
+      </if>
+      <if test="appTime != null">
+        app_time = #{appTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.association.pojo.ApplyJoinAssoc">
+    update apply_join_assoc
+    set applicant_id = #{applicantId,jdbcType=INTEGER},
+      assoc_id = #{assocId,jdbcType=INTEGER},
+      app_status = #{appStatus,jdbcType=INTEGER},
+      app_time = #{appTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

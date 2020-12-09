@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.association.dao.MajorMapper">
+  <resultMap id="BaseResultMap" type="com.example.association.pojo.Major">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="academy_id" jdbcType="INTEGER" property="academyId" />
+    <result column="major_name" jdbcType="VARCHAR" property="majorName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, academy_id, major_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from major
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from major
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.association.pojo.Major">
+    insert into major (id, academy_id, major_name
+      )
+    values (#{id,jdbcType=INTEGER}, #{academyId,jdbcType=INTEGER}, #{majorName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.association.pojo.Major">
+    insert into major
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="academyId != null">
+        academy_id,
+      </if>
+      <if test="majorName != null">
+        major_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="academyId != null">
+        #{academyId,jdbcType=INTEGER},
+      </if>
+      <if test="majorName != null">
+        #{majorName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.association.pojo.Major">
+    update major
+    <set>
+      <if test="academyId != null">
+        academy_id = #{academyId,jdbcType=INTEGER},
+      </if>
+      <if test="majorName != null">
+        major_name = #{majorName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.association.pojo.Major">
+    update major
+    set academy_id = #{academyId,jdbcType=INTEGER},
+      major_name = #{majorName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
