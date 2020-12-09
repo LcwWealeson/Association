@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.association.dao.AssociationMapper">
+  <resultMap id="BaseResultMap" type="com.example.association.pojo.Association">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="assoc_name" jdbcType="VARCHAR" property="assocName" />
+    <result column="assoc_intro" jdbcType="VARCHAR" property="assocIntro" />
+    <result column="member_num" jdbcType="INTEGER" property="memberNum" />
+    <result column="institution" jdbcType="VARCHAR" property="institution" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="estab_time" jdbcType="TIMESTAMP" property="estabTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, assoc_name, assoc_intro, member_num, institution, icon, estab_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from association
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from association
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.association.pojo.Association">
+    insert into association (id, assoc_name, assoc_intro, 
+      member_num, institution, icon, 
+      estab_time)
+    values (#{id,jdbcType=INTEGER}, #{assocName,jdbcType=VARCHAR}, #{assocIntro,jdbcType=VARCHAR}, 
+      #{memberNum,jdbcType=INTEGER}, #{institution,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
+      #{estabTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.association.pojo.Association">
+    insert into association
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="assocName != null">
+        assoc_name,
+      </if>
+      <if test="assocIntro != null">
+        assoc_intro,
+      </if>
+      <if test="memberNum != null">
+        member_num,
+      </if>
+      <if test="institution != null">
+        institution,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="estabTime != null">
+        estab_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="assocName != null">
+        #{assocName,jdbcType=VARCHAR},
+      </if>
+      <if test="assocIntro != null">
+        #{assocIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="memberNum != null">
+        #{memberNum,jdbcType=INTEGER},
+      </if>
+      <if test="institution != null">
+        #{institution,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="estabTime != null">
+        #{estabTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.association.pojo.Association">
+    update association
+    <set>
+      <if test="assocName != null">
+        assoc_name = #{assocName,jdbcType=VARCHAR},
+      </if>
+      <if test="assocIntro != null">
+        assoc_intro = #{assocIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="memberNum != null">
+        member_num = #{memberNum,jdbcType=INTEGER},
+      </if>
+      <if test="institution != null">
+        institution = #{institution,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="estabTime != null">
+        estab_time = #{estabTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.association.pojo.Association">
+    update association
+    set assoc_name = #{assocName,jdbcType=VARCHAR},
+      assoc_intro = #{assocIntro,jdbcType=VARCHAR},
+      member_num = #{memberNum,jdbcType=INTEGER},
+      institution = #{institution,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      estab_time = #{estabTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

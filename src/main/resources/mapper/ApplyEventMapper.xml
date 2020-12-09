@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.association.dao.ApplyEventMapper">
+  <resultMap id="BaseResultMap" type="com.example.association.pojo.ApplyEvent">
+    <id column="event_id" jdbcType="INTEGER" property="eventId" />
+    <result column="assoc_id" jdbcType="INTEGER" property="assocId" />
+    <result column="event_name" jdbcType="VARCHAR" property="eventName" />
+    <result column="event_intro" jdbcType="VARCHAR" property="eventIntro" />
+    <result column="applicant_id" jdbcType="VARCHAR" property="applicantId" />
+    <result column="event_place" jdbcType="VARCHAR" property="eventPlace" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
+    <result column="event_status" jdbcType="VARCHAR" property="eventStatus" />
+    <result column="verify_time" jdbcType="TIMESTAMP" property="verifyTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    event_id, assoc_id, event_name, event_intro, applicant_id, event_place, start_time, 
+    end_time, apply_time, event_status, verify_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from apply_event
+    where event_id = #{eventId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from apply_event
+    where event_id = #{eventId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.association.pojo.ApplyEvent">
+    insert into apply_event (event_id, assoc_id, event_name, 
+      event_intro, applicant_id, event_place, 
+      start_time, end_time, apply_time, 
+      event_status, verify_time)
+    values (#{eventId,jdbcType=INTEGER}, #{assocId,jdbcType=INTEGER}, #{eventName,jdbcType=VARCHAR}, 
+      #{eventIntro,jdbcType=VARCHAR}, #{applicantId,jdbcType=VARCHAR}, #{eventPlace,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{applyTime,jdbcType=TIMESTAMP}, 
+      #{eventStatus,jdbcType=VARCHAR}, #{verifyTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.association.pojo.ApplyEvent">
+    insert into apply_event
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="eventId != null">
+        event_id,
+      </if>
+      <if test="assocId != null">
+        assoc_id,
+      </if>
+      <if test="eventName != null">
+        event_name,
+      </if>
+      <if test="eventIntro != null">
+        event_intro,
+      </if>
+      <if test="applicantId != null">
+        applicant_id,
+      </if>
+      <if test="eventPlace != null">
+        event_place,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="applyTime != null">
+        apply_time,
+      </if>
+      <if test="eventStatus != null">
+        event_status,
+      </if>
+      <if test="verifyTime != null">
+        verify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="eventId != null">
+        #{eventId,jdbcType=INTEGER},
+      </if>
+      <if test="assocId != null">
+        #{assocId,jdbcType=INTEGER},
+      </if>
+      <if test="eventName != null">
+        #{eventName,jdbcType=VARCHAR},
+      </if>
+      <if test="eventIntro != null">
+        #{eventIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantId != null">
+        #{applicantId,jdbcType=VARCHAR},
+      </if>
+      <if test="eventPlace != null">
+        #{eventPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyTime != null">
+        #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eventStatus != null">
+        #{eventStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyTime != null">
+        #{verifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.association.pojo.ApplyEvent">
+    update apply_event
+    <set>
+      <if test="assocId != null">
+        assoc_id = #{assocId,jdbcType=INTEGER},
+      </if>
+      <if test="eventName != null">
+        event_name = #{eventName,jdbcType=VARCHAR},
+      </if>
+      <if test="eventIntro != null">
+        event_intro = #{eventIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantId != null">
+        applicant_id = #{applicantId,jdbcType=VARCHAR},
+      </if>
+      <if test="eventPlace != null">
+        event_place = #{eventPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyTime != null">
+        apply_time = #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eventStatus != null">
+        event_status = #{eventStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyTime != null">
+        verify_time = #{verifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where event_id = #{eventId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.association.pojo.ApplyEvent">
+    update apply_event
+    set assoc_id = #{assocId,jdbcType=INTEGER},
+      event_name = #{eventName,jdbcType=VARCHAR},
+      event_intro = #{eventIntro,jdbcType=VARCHAR},
+      applicant_id = #{applicantId,jdbcType=VARCHAR},
+      event_place = #{eventPlace,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      apply_time = #{applyTime,jdbcType=TIMESTAMP},
+      event_status = #{eventStatus,jdbcType=VARCHAR},
+      verify_time = #{verifyTime,jdbcType=TIMESTAMP}
+    where event_id = #{eventId,jdbcType=INTEGER}
+  </update>
+</mapper>
