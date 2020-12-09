@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.association.dao.ApplyAssociationMapper">
+  <resultMap id="BaseResultMap" type="com.example.association.pojo.ApplyAssociation">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="assoc_name" jdbcType="VARCHAR" property="assocName" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="apply_reason" jdbcType="VARCHAR" property="applyReason" />
+    <result column="apply_status" jdbcType="VARCHAR" property="applyStatus" />
+    <result column="admin_id" jdbcType="INTEGER" property="adminId" />
+    <result column="verify_time" jdbcType="TIMESTAMP" property="verifyTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, assoc_name, user_id, apply_reason, apply_status, admin_id, verify_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from apply_association
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from apply_association
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.association.pojo.ApplyAssociation">
+    insert into apply_association (id, assoc_name, user_id, 
+      apply_reason, apply_status, admin_id, 
+      verify_time)
+    values (#{id,jdbcType=INTEGER}, #{assocName,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{applyReason,jdbcType=VARCHAR}, #{applyStatus,jdbcType=VARCHAR}, #{adminId,jdbcType=INTEGER}, 
+      #{verifyTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.association.pojo.ApplyAssociation">
+    insert into apply_association
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="assocName != null">
+        assoc_name,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="applyReason != null">
+        apply_reason,
+      </if>
+      <if test="applyStatus != null">
+        apply_status,
+      </if>
+      <if test="adminId != null">
+        admin_id,
+      </if>
+      <if test="verifyTime != null">
+        verify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="assocName != null">
+        #{assocName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="applyReason != null">
+        #{applyReason,jdbcType=VARCHAR},
+      </if>
+      <if test="applyStatus != null">
+        #{applyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="adminId != null">
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="verifyTime != null">
+        #{verifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.association.pojo.ApplyAssociation">
+    update apply_association
+    <set>
+      <if test="assocName != null">
+        assoc_name = #{assocName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="applyReason != null">
+        apply_reason = #{applyReason,jdbcType=VARCHAR},
+      </if>
+      <if test="applyStatus != null">
+        apply_status = #{applyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="adminId != null">
+        admin_id = #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="verifyTime != null">
+        verify_time = #{verifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.association.pojo.ApplyAssociation">
+    update apply_association
+    set assoc_name = #{assocName,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      apply_reason = #{applyReason,jdbcType=VARCHAR},
+      apply_status = #{applyStatus,jdbcType=VARCHAR},
+      admin_id = #{adminId,jdbcType=INTEGER},
+      verify_time = #{verifyTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

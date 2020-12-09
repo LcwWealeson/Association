@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.association.dao.ApplyParticipationMapper">
+  <resultMap id="BaseResultMap" type="com.example.association.pojo.ApplyParticipation">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="event_id" jdbcType="INTEGER" property="eventId" />
+    <result column="participant_id_" jdbcType="INTEGER" property="participantId" />
+    <result column="event_app_status" jdbcType="INTEGER" property="eventAppStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, event_id, participant_id_, event_app_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from apply_participation
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from apply_participation
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.association.pojo.ApplyParticipation">
+    insert into apply_participation (id, event_id, participant_id_, 
+      event_app_status)
+    values (#{id,jdbcType=INTEGER}, #{eventId,jdbcType=INTEGER}, #{participantId,jdbcType=INTEGER}, 
+      #{eventAppStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.association.pojo.ApplyParticipation">
+    insert into apply_participation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="eventId != null">
+        event_id,
+      </if>
+      <if test="participantId != null">
+        participant_id_,
+      </if>
+      <if test="eventAppStatus != null">
+        event_app_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="eventId != null">
+        #{eventId,jdbcType=INTEGER},
+      </if>
+      <if test="participantId != null">
+        #{participantId,jdbcType=INTEGER},
+      </if>
+      <if test="eventAppStatus != null">
+        #{eventAppStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.association.pojo.ApplyParticipation">
+    update apply_participation
+    <set>
+      <if test="eventId != null">
+        event_id = #{eventId,jdbcType=INTEGER},
+      </if>
+      <if test="participantId != null">
+        participant_id_ = #{participantId,jdbcType=INTEGER},
+      </if>
+      <if test="eventAppStatus != null">
+        event_app_status = #{eventAppStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.association.pojo.ApplyParticipation">
+    update apply_participation
+    set event_id = #{eventId,jdbcType=INTEGER},
+      participant_id_ = #{participantId,jdbcType=INTEGER},
+      event_app_status = #{eventAppStatus,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
