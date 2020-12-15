@@ -7,6 +7,11 @@ public class AssocMember {
 
     private Integer assocId;
 
+    public AssocMember(Integer memberId, Integer assocId) {
+        this.memberId = memberId;
+        this.assocId = assocId;
+    }
+
     public Integer getId() {
         return id;
     }

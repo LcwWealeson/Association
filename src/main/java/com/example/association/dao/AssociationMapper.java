@@ -16,8 +16,14 @@ public interface AssociationMapper {
     int updateByPrimaryKeySelective(Association record);
 
     int updateByPrimaryKey(Association record);
-
+    
     List<Association> getList(String assocName);
 
     Integer getIdByName(String assocName);
+
+    int increaseMemberNumByAssocId(Integer associationId, Integer gap);
+
+    int decreaseMemberNumberByAssocId(Integer associationId, Integer gap);
+
+    List<Association> selectAssociationByAdminId(Integer adminId);
 }

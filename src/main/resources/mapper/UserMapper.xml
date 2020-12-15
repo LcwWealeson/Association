@@ -161,4 +161,11 @@
       class_from = #{classFrom,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+<!--  自定义mapper-->
+  <select id="getNameById" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select username
+    from user
+    where id = #{userId}
+  </select>
 </mapper>

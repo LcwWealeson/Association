@@ -1,8 +1,11 @@
 package com.example.association.pojo;
 
+import io.swagger.annotations.ApiModel;
+
 import java.util.Date;
 
 public class ApplyEvent {
+
     private Integer eventId;
 
     private Integer assocId;

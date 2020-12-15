@@ -2,6 +2,8 @@ package com.example.association.dao;
 
 import com.example.association.pojo.AssocMember;
 
+import java.util.List;
+
 public interface AssocMemberMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,10 @@ public interface AssocMemberMapper {
     int updateByPrimaryKeySelective(AssocMember record);
 
     int updateByPrimaryKey(AssocMember record);
+
+    List<Integer> getAllAssocMembersId(Integer associationId);
+
+    int removeMemberById(Integer memberId, Integer associationId);
+
+    Integer getByMemberId(Integer applicantId, Integer associationId);
 }
