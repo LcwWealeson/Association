@@ -4,6 +4,4 @@ package com.example.association.controller;
 @RequestMapping("/admin")
 public class AdminController {
 
-
-
 }
