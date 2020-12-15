@@ -17,7 +17,4 @@ public interface ApplyEventMapper {
 
     int updateByPrimaryKey(ApplyEvent record);
 
-    List<ApplyEvent> getList(ApplyEvent record);
-
-    List<ApplyEvent> selectByStatusIs1();
 }
