@@ -68,4 +68,16 @@
       major_name = #{majorName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getAll" resultMap="BaseResultMap">
+    select *
+    from major
+    where academy_id = #{academyId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getNameById" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select major_name
+    from major
+    where id = #{id,jdbcType=INTEGER}
+  </select>
 </mapper>

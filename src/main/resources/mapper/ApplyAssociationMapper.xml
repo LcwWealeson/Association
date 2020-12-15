@@ -27,8 +27,8 @@
     insert into apply_association (id, assoc_name, user_id, 
       apply_reason, apply_status, admin_id, 
       verify_time)
-    values (#{id,jdbcType=INTEGER}, #{assocName,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
-      #{applyReason,jdbcType=VARCHAR}, #{applyStatus,jdbcType=INTEGER}, #{adminId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{assocName,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER},
+      #{applyReason,jdbcType=VARCHAR}, #{applyStatus,jdbcType=INTEGER}, #{adminId,jdbcType=INTEGER},
       #{verifyTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.example.association.pojo.ApplyAssociation">
@@ -114,4 +114,15 @@
       verify_time = #{verifyTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+<!--  自定义Mapper-->
+  <select id="selectList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from apply_association
+    <where>
+        <if test="assocName!=null and assocName !=''">
+           assoc_name like concat('%',#{assocName},'%')
+        </if>
+    </where>
+  </select>
 </mapper>

@@ -1,7 +1,7 @@
 spring:
   datasource:
     username: root
-    password: 1065807369--
+    password: zzx3750322
     driver-class-name: com.mysql.cj.jdbc.Driver
     #时区改成亚洲的上海
     url: jdbc:mysql://localhost:3306/association?userUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
