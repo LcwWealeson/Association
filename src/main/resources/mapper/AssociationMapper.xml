@@ -9,9 +9,10 @@
     <result column="institution" jdbcType="VARCHAR" property="institution" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="estab_time" jdbcType="TIMESTAMP" property="estabTime" />
+    <result column="adminId" jdbcType="INTEGER" property="adminid" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, assoc_name, assoc_intro, member_num, institution, icon, estab_time
+    id, assoc_name, assoc_intro, member_num, institution, icon, estab_time, adminId
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -26,10 +27,10 @@
   <insert id="insert" parameterType="com.example.association.pojo.Association">
     insert into association (id, assoc_name, assoc_intro, 
       member_num, institution, icon, 
-      estab_time)
+      estab_time, adminId)
     values (#{id,jdbcType=INTEGER}, #{assocName,jdbcType=VARCHAR}, #{assocIntro,jdbcType=VARCHAR}, 
       #{memberNum,jdbcType=INTEGER}, #{institution,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
-      #{estabTime,jdbcType=TIMESTAMP})
+      #{estabTime,jdbcType=TIMESTAMP}, #{adminid,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.example.association.pojo.Association">
     insert into association
@@ -55,6 +56,9 @@
       <if test="estabTime != null">
         estab_time,
       </if>
+      <if test="adminid != null">
+        adminId,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -77,6 +81,9 @@
       </if>
       <if test="estabTime != null">
         #{estabTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adminid != null">
+        #{adminid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -101,6 +108,9 @@
       <if test="estabTime != null">
         estab_time = #{estabTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="adminid != null">
+        adminId = #{adminid,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -111,7 +121,27 @@
       member_num = #{memberNum,jdbcType=INTEGER},
       institution = #{institution,jdbcType=VARCHAR},
       icon = #{icon,jdbcType=VARCHAR},
-      estab_time = #{estabTime,jdbcType=TIMESTAMP}
+      estab_time = #{estabTime,jdbcType=TIMESTAMP},
+      adminId = #{adminid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+<!--  自定义mapper-->
+  <update id="increaseMemberNumByAssocId" parameterType="java.lang.Integer">
+    update association
+    set member_num = member_num+#{gap,jdbcType=INTEGER}
+    where id = #{associationId,jdbcType=INTEGER}
+  </update>
+
+  <update id="decreaseMemberNumberByAssocId" parameterType="java.lang.Integer">
+    update association
+    set member_num = member_num-#{gap,jdbcType=INTEGER}
+    where id = #{associationId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectAssociationByAdminId" parameterType="java.lang.Integer">
+    select *
+    from association
+    where adminId = #{adminId,jdbcType=INTEGER}
+  </select>
 </mapper>

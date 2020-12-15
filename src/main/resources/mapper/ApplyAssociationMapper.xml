@@ -6,7 +6,7 @@
     <result column="assoc_name" jdbcType="VARCHAR" property="assocName" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="apply_reason" jdbcType="VARCHAR" property="applyReason" />
-    <result column="apply_status" jdbcType="VARCHAR" property="applyStatus" />
+    <result column="apply_status" jdbcType="INTEGER" property="applyStatus" />
     <result column="admin_id" jdbcType="INTEGER" property="adminId" />
     <result column="verify_time" jdbcType="TIMESTAMP" property="verifyTime" />
   </resultMap>
@@ -28,7 +28,7 @@
       apply_reason, apply_status, admin_id, 
       verify_time)
     values (#{id,jdbcType=INTEGER}, #{assocName,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
-      #{applyReason,jdbcType=VARCHAR}, #{applyStatus,jdbcType=VARCHAR}, #{adminId,jdbcType=INTEGER}, 
+      #{applyReason,jdbcType=VARCHAR}, #{applyStatus,jdbcType=INTEGER}, #{adminId,jdbcType=INTEGER}, 
       #{verifyTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.example.association.pojo.ApplyAssociation">
@@ -70,7 +70,7 @@
         #{applyReason,jdbcType=VARCHAR},
       </if>
       <if test="applyStatus != null">
-        #{applyStatus,jdbcType=VARCHAR},
+        #{applyStatus,jdbcType=INTEGER},
       </if>
       <if test="adminId != null">
         #{adminId,jdbcType=INTEGER},
@@ -93,7 +93,7 @@
         apply_reason = #{applyReason,jdbcType=VARCHAR},
       </if>
       <if test="applyStatus != null">
-        apply_status = #{applyStatus,jdbcType=VARCHAR},
+        apply_status = #{applyStatus,jdbcType=INTEGER},
       </if>
       <if test="adminId != null">
         admin_id = #{adminId,jdbcType=INTEGER},
@@ -109,7 +109,7 @@
     set assoc_name = #{assocName,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=INTEGER},
       apply_reason = #{applyReason,jdbcType=VARCHAR},
-      apply_status = #{applyStatus,jdbcType=VARCHAR},
+      apply_status = #{applyStatus,jdbcType=INTEGER},
       admin_id = #{adminId,jdbcType=INTEGER},
       verify_time = #{verifyTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

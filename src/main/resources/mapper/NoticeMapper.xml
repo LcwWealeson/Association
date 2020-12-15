@@ -90,4 +90,29 @@
       publish_time = #{publishTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+<!--  自定义mapper-->
+  <select id="selectByAssocId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
+    from notice
+    where assoc_id = #{associationId}
+  </select>
+
+  <update id="updateNoticeByAssociationId" parameterType="com.example.association.pojo.Notice">
+    update notice
+    <set>
+      <if test="assocId != null">
+        assoc_id = #{assocId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where assoc_id = #{assocId,jdbcType=INTEGER}
+  </update>
 </mapper>

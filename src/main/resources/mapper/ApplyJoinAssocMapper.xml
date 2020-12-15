@@ -90,4 +90,23 @@
       app_time = #{appTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+<!--  自定义mapper-->
+  <select id="getApplyJoinAssocList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
+    from apply_join_assoc
+    where assoc_id = #{associationId}
+  </select>
+
+  <update id="checkApplyJoinTo1" parameterType="java.lang.Integer">
+    update apply_join_assoc
+    set app_status = 1
+    where id=#{applyJoinAssocId} and applicant_id=#{applicantId} and assoc_id=#{associationId}
+  </update>
+
+  <update id="checkApplyJoinTo2" parameterType="java.lang.Integer">
+    update apply_join_assoc
+    set app_status = 2
+    where id=#{applyJoinAssocId} and applicant_id=#{applicantId} and assoc_id=#{associationId}
+  </update>
 </mapper>

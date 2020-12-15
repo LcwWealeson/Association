@@ -11,7 +11,7 @@ public class ApplyAssociation {
 
     private String applyReason;
 
-    private String applyStatus;
+    private Integer applyStatus;
 
     private Integer adminId;
 
@@ -49,12 +49,12 @@ public class ApplyAssociation {
         this.applyReason = applyReason == null ? null : applyReason.trim();
     }
 
-    public String getApplyStatus() {
+    public Integer getApplyStatus() {
         return applyStatus;
     }
 
-    public void setApplyStatus(String applyStatus) {
-        this.applyStatus = applyStatus == null ? null : applyStatus.trim();
+    public void setApplyStatus(Integer applyStatus) {
+        this.applyStatus = applyStatus;
     }
 
     public Integer getAdminId() {

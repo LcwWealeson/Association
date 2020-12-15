@@ -17,6 +17,8 @@ public class Association {
 
     private Date estabTime;
 
+    private Integer adminid;
+
     public Integer getId() {
         return id;
     }
@@ -71,5 +73,13 @@ public class Association {
 
     public void setEstabTime(Date estabTime) {
         this.estabTime = estabTime;
+    }
+
+    public Integer getAdminid() {
+        return adminid;
+    }
+
+    public void setAdminid(Integer adminid) {
+        this.adminid = adminid;
     }
 }
