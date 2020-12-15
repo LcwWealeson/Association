@@ -2,6 +2,8 @@ package com.example.association.dao;
 
 import com.example.association.pojo.Academy;
 
+import java.util.List;
+
 public interface AcademyMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface AcademyMapper {
     int updateByPrimaryKeySelective(Academy record);
 
     int updateByPrimaryKey(Academy record);
+
+    List<Academy> getAll();
 }

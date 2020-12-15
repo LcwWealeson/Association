@@ -2,6 +2,8 @@ package com.example.association.dao;
 
 import com.example.association.pojo.ApplyAssociation;
 
+import java.util.List;
+
 public interface ApplyAssociationMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,7 @@ public interface ApplyAssociationMapper {
     int updateByPrimaryKeySelective(ApplyAssociation record);
 
     int updateByPrimaryKey(ApplyAssociation record);
+
+    List<ApplyAssociation> selectList(String assocName);
+
 }
