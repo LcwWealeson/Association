@@ -1,7 +1,7 @@
 package com.example.association.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.association.Service.ICommonService;
+import com.example.association.service.ICommonService;
 import com.example.association.common.ServerResponse;
 import com.example.association.pojo.User;
 import io.swagger.annotations.Api;
@@ -25,7 +25,7 @@ public class CommonController {
     @PostMapping("/register")
     @ApiOperation(value = "用户注册",notes = "提交一个用户对象")
     public ServerResponse register(@ApiParam(name = "user",value = "用户实体",required = true)
-                                       @RequestBody User user){
+                                   @RequestBody User user){
         return iCommonService.register(user);
     }
 
@@ -42,8 +42,8 @@ public class CommonController {
     @PostMapping("/changeInfo")
     @ApiOperation(value = "个人信息修改",notes = "个人信息修改，前端应该只允许修改非关键的字段，不能自行修改id，用户名等等")
     public ServerResponse changeInfo(@ApiParam(name = "user",value = "用户对象",required = true)
-                                         @RequestBody User user){
-       return iCommonService.changeInfo(user);
+                                     @RequestBody User user){
+        return iCommonService.changeInfo(user);
     }
 
     //获取学院

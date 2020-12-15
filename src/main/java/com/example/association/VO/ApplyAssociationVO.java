@@ -1,4 +1,4 @@
-package com.example.association.VO;
+package com.example.association.vo;
 
 import com.example.association.pojo.ApplyAssociation;
 

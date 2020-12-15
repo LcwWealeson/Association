@@ -1,8 +1,8 @@
-package com.example.association.Service.impl;
+package com.example.association.service.impl;
 
-import com.example.association.Service.ISuperAdminService;
-import com.example.association.VO.ApplyAssociationVO;
-import com.example.association.VO.ApplyEventVO;
+import com.example.association.service.ISuperAdminService;
+import com.example.association.vo.ApplyAssociationVO;
+import com.example.association.vo.ApplyEventVO;
 import com.example.association.common.ServerResponse;
 import com.example.association.dao.ApplyAssociationMapper;
 import com.example.association.dao.ApplyEventMapper;
@@ -16,7 +16,7 @@ import com.example.association.utils.MD5Util;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.security.provider.MD5;
+
 
 import java.util.ArrayList;
 import java.util.Date;
