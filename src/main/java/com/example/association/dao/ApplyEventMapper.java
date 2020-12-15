@@ -2,6 +2,8 @@ package com.example.association.dao;
 
 import com.example.association.pojo.ApplyEvent;
 
+import java.util.List;
+
 public interface ApplyEventMapper {
     int deleteByPrimaryKey(Integer eventId);
 
@@ -14,4 +16,7 @@ public interface ApplyEventMapper {
     int updateByPrimaryKeySelective(ApplyEvent record);
 
     int updateByPrimaryKey(ApplyEvent record);
+
+    List<ApplyEvent> selectByApplicantId(Integer applicantId);
+
 }

@@ -14,4 +14,10 @@ public interface NoticeMapper {
     int updateByPrimaryKeySelective(Notice record);
 
     int updateByPrimaryKey(Notice record);
+
+    //自定义
+    Notice selectByAssocId(Integer associationId);
+
+    int updateNoticeByAssociationId(Notice notice);
+
 }

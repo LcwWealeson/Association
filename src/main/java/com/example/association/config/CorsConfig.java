@@ -13,7 +13,7 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 //允许远端访问的域名，这里只能是域名，也就是不能出现ip地址
                 //可以是http://localhost:8080，表示可以由本地域名中的8080端口访问
-                .allowedOrigins("*")
+                .allowedOrigins("POST", "GET", "PUT", "OPTIONS", "DELETE")
                 //允许请求的方法("POST", "GET", "PUT", "OPTIONS", "DELETE")
                 .allowedMethods("*")
                 //允许请求头

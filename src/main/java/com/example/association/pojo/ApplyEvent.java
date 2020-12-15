@@ -1,8 +1,11 @@
 package com.example.association.pojo;
 
+import io.swagger.annotations.ApiModel;
+
 import java.util.Date;
 
 public class ApplyEvent {
+
     private Integer eventId;
 
     private Integer assocId;
@@ -11,7 +14,7 @@ public class ApplyEvent {
 
     private String eventIntro;
 
-    private String applicantId;
+    private Integer applicantId;
 
     private String eventPlace;
 
@@ -21,7 +24,7 @@ public class ApplyEvent {
 
     private Date applyTime;
 
-    private String eventStatus;
+    private Integer eventStatus;
 
     private Date verifyTime;
 
@@ -57,12 +60,12 @@ public class ApplyEvent {
         this.eventIntro = eventIntro == null ? null : eventIntro.trim();
     }
 
-    public String getApplicantId() {
+    public Integer getApplicantId() {
         return applicantId;
     }
 
-    public void setApplicantId(String applicantId) {
-        this.applicantId = applicantId == null ? null : applicantId.trim();
+    public void setApplicantId(Integer applicantId) {
+        this.applicantId = applicantId;
     }
 
     public String getEventPlace() {
@@ -97,12 +100,12 @@ public class ApplyEvent {
         this.applyTime = applyTime;
     }
 
-    public String getEventStatus() {
+    public Integer getEventStatus() {
         return eventStatus;
     }
 
-    public void setEventStatus(String eventStatus) {
-        this.eventStatus = eventStatus == null ? null : eventStatus.trim();
+    public void setEventStatus(Integer eventStatus) {
+        this.eventStatus = eventStatus;
     }
 
     public Date getVerifyTime() {
