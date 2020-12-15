@@ -17,6 +17,7 @@ public class ApplyAssociation {
 
     private Date verifyTime;
 
+
     public Integer getId() {
         return id;
     }
