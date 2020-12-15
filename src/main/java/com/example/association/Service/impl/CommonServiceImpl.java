@@ -1,7 +1,5 @@
 package com.example.association.service.impl;
 
-import com.example.association.service.ICommonService;
-import com.example.association.VO.ClassesVO;
 import com.example.association.common.ServerResponse;
 import com.example.association.dao.AcademyMapper;
 import com.example.association.dao.ClassesMapper;
@@ -11,7 +9,9 @@ import com.example.association.pojo.Academy;
 import com.example.association.pojo.Classes;
 import com.example.association.pojo.Major;
 import com.example.association.pojo.User;
+import com.example.association.service.ICommonService;
 import com.example.association.utils.MD5Util;
+import com.example.association.vo.ClassesVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -93,7 +93,7 @@ public class Association {
         return adminId;
     }
 
-    public void setAdminId(Integer adminid) {
-        this.adminId = adminid;
+    public void setAdminId(Integer adminId) {
+        this.adminId = adminId;
     }
 }

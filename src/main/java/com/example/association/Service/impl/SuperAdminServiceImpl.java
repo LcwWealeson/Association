@@ -16,7 +16,7 @@ import com.example.association.utils.MD5Util;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.security.provider.MD5;
+
 
 import java.util.ArrayList;
 import java.util.Date;
