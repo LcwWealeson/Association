@@ -1,6 +1,6 @@
-package com.example.association.Service.impl;
+package com.example.association.service.impl;
 
-import com.example.association.Service.ICommonService;
+import com.example.association.service.ICommonService;
 import com.example.association.VO.ClassesVO;
 import com.example.association.common.ServerResponse;
 import com.example.association.dao.AcademyMapper;

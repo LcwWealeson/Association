@@ -1,4 +1,4 @@
-package com.example.association.Service;
+package com.example.association.service;
 
 import com.example.association.common.ServerResponse;
 import org.springframework.stereotype.Service;

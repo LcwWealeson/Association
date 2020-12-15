@@ -1,8 +1,8 @@
-package com.example.association.Service.impl;
+package com.example.association.service.impl;
 
-import com.example.association.Service.ISuperAdminService;
-import com.example.association.VO.ApplyAssociationVO;
-import com.example.association.VO.ApplyEventVO;
+import com.example.association.service.ISuperAdminService;
+import com.example.association.vo.ApplyAssociationVO;
+import com.example.association.vo.ApplyEventVO;
 import com.example.association.common.ServerResponse;
 import com.example.association.dao.ApplyAssociationMapper;
 import com.example.association.dao.ApplyEventMapper;
