@@ -33,8 +33,8 @@
       event_intro, applicant_id, event_place, 
       start_time, end_time, apply_time, 
       event_status, verify_time)
-    values (#{eventId,jdbcType=INTEGER}, #{assocId,jdbcType=INTEGER}, #{eventName,jdbcType=VARCHAR}, 
-      #{eventIntro,jdbcType=VARCHAR}, #{applicantId,jdbcType=INTEGER}, #{eventPlace,jdbcType=VARCHAR}, 
+    values (#{eventId,jdbcType=INTEGER}, #{assocId,jdbcType=INTEGER}, #{eventName,jdbcType=VARCHAR},
+      #{eventIntro,jdbcType=VARCHAR}, #{applicantId,jdbcType=INTEGER}, #{eventPlace,jdbcType=VARCHAR},
       #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{applyTime,jdbcType=TIMESTAMP}, 
       #{eventStatus,jdbcType=INTEGER}, #{verifyTime,jdbcType=TIMESTAMP})
   </insert>
@@ -162,10 +162,34 @@
     where event_id = #{eventId,jdbcType=INTEGER}
   </update>
 
+
   <!--  自定义mapper-->
   <select id="selectByApplicantId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
   select *
   from apply_event
   where applicant_id = #{applicantId}
-</select>
+    </select>
+
+  <select id="getList" parameterType="com.example.association.pojo.ApplyEvent" resultMap="BaseResultMap">
+    select *
+    from apply_event
+    <where>
+      <if test="eventName!=null and eventName!=''">
+        OR event_name like concat('%',#{eventName},'%')
+      </if>
+      <if test="assocId!=null and assocId!=''">
+        OR assoc_id = #{assocId}
+      </if>
+      <if test="applicantId!=null and applicantId!=''">
+        OR applicant_id = #{applicantId}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByStatusIs1" resultMap="BaseResultMap">
+    select *
+    from apply_event
+    where event_status = 1
+  </select>
+
 </mapper>

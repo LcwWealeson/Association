@@ -9,10 +9,10 @@
     <result column="institution" jdbcType="VARCHAR" property="institution" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="estab_time" jdbcType="TIMESTAMP" property="estabTime" />
-    <result column="adminId" jdbcType="INTEGER" property="adminid" />
+    <result column="admin_id" jdbcType="INTEGER" property="adminId" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, assoc_name, assoc_intro, member_num, institution, icon, estab_time, adminId
+    id, assoc_name, assoc_intro, member_num, institution, icon, estab_time,admin_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -26,11 +26,11 @@
   </delete>
   <insert id="insert" parameterType="com.example.association.pojo.Association">
     insert into association (id, assoc_name, assoc_intro, 
-      member_num, institution, icon, 
-      estab_time, adminId)
+      member_num, institution, icon,
+      estab_time,admin_id)
     values (#{id,jdbcType=INTEGER}, #{assocName,jdbcType=VARCHAR}, #{assocIntro,jdbcType=VARCHAR}, 
       #{memberNum,jdbcType=INTEGER}, #{institution,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
-      #{estabTime,jdbcType=TIMESTAMP}, #{adminid,jdbcType=INTEGER})
+      #{estabTime,jdbcType=TIMESTAMP},#{adminId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.example.association.pojo.Association">
     insert into association
@@ -56,8 +56,8 @@
       <if test="estabTime != null">
         estab_time,
       </if>
-      <if test="adminid != null">
-        adminId,
+      <if test="adminId != null">
+        admin_id
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -82,8 +82,8 @@
       <if test="estabTime != null">
         #{estabTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="adminid != null">
-        #{adminid,jdbcType=INTEGER},
+      <if test="adminId != null">
+        #{adminId,jdbcType=VARCHAR}
       </if>
     </trim>
   </insert>
@@ -143,5 +143,20 @@
     select *
     from association
     where adminId = #{adminId,jdbcType=INTEGER}
+  </select>
+  <select id="getList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from association
+    <where>
+      <if test="assocName!=null and assocName!=''">
+        assoc_name like concat('%',#{assocName},'%')
+      </if>
+    </where>
+  </select>
+
+  <select id="getIdByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select id
+    from association
+    where assoc_name like concat('%',#{assocName},'%')
   </select>
 </mapper>
