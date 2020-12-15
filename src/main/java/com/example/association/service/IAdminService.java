@@ -12,7 +12,7 @@ public interface IAdminService {
 
     ServerResponse getMember(Integer associationId);
 
-    ServerResponse removeOneMemberById(Integer memberId,Integer associationId );
+    ServerResponse removeOneMemberById(Integer memberId, Integer associationId);
 
     ServerResponse publishNotice(Notice notice);
 
