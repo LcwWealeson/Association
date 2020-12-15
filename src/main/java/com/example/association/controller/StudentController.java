@@ -1,6 +1,6 @@
 package com.example.association.controller;
 
-import com.example.association.Service.IStudentService;
+import com.example.association.service.IStudentService;
 import com.example.association.common.ServerResponse;
 import com.example.association.pojo.ApplyAssociation;
 import io.swagger.annotations.Api;
