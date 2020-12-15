@@ -79,4 +79,11 @@
       class_number = #{classNumber,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getAll" resultMap="BaseResultMap">
+    select *
+    from classes
+    where academy_id = #{academyId,jdbcType=INTEGER}
+    and major_id = #{majorId,jdbcType=INTEGER}
+  </select>
 </mapper>
