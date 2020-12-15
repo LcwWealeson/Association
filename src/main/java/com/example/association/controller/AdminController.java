@@ -23,14 +23,14 @@ public class AdminController {
     //获取社团负责人的社团信息列表
     @GetMapping("/getAllAssociationsByAadminId")
     @ApiOperation(value = "获取社团负责人的社团信息列表")
-    public ServerResponse getAllAssociations(Integer adminId){
+    public ServerResponse getAllAssociations(@ApiParam(name = "adminId",value = "社团负责人的id")Integer adminId){
         return adminService.getAllAssociations(adminId);
     }
 
     //获取社团负责人名下某个社团的详细信息
     @GetMapping("/getCurrentAssociation")
     @ApiOperation(value = "社团负责人获取自己某个社团的详细信息",notes = "社传入一个社团id，获取某个社团的详细信息")
-    public ServerResponse getCurrentAssociation(Integer associationId){
+    public ServerResponse getCurrentAssociation(@ApiParam(name = "associationId",value = "社团id")Integer associationId){
         return adminService.getAssociationInfor(associationId);
     }
 
