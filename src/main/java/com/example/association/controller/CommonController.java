@@ -1,7 +1,7 @@
 package com.example.association.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.association.Service.ICommonService;
+import com.example.association.service.ICommonService;
 import com.example.association.common.ServerResponse;
 import com.example.association.pojo.User;
 import io.swagger.annotations.Api;

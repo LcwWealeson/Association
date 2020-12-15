@@ -1,6 +1,6 @@
 package com.example.association.controller;
 
-import com.example.association.Service.ISuperAdminService;
+import com.example.association.service.ISuperAdminService;
 import com.example.association.common.ServerResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

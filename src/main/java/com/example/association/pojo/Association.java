@@ -17,7 +17,7 @@ public class Association {
 
     private Date estabTime;
 
-    private Integer adminid;
+    private Integer adminId;
 
     public Association() {
     }
@@ -89,11 +89,11 @@ public class Association {
         this.estabTime = estabTime;
     }
 
-    public Integer getAdminid() {
-        return adminid;
+    public Integer getAdminId() {
+        return adminId;
     }
 
-    public void setAdminid(Integer adminid) {
-        this.adminid = adminid;
+    public void setAdminId(Integer adminId) {
+        this.adminId = adminId;
     }
 }
