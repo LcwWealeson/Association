@@ -16,5 +16,4 @@ public interface ApplyEventMapper {
     int updateByPrimaryKeySelective(ApplyEvent record);
 
     int updateByPrimaryKey(ApplyEvent record);
-
 }
