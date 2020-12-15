@@ -11,7 +11,7 @@ public class ApplyEvent {
 
     private String eventIntro;
 
-    private String applicantId;
+    private Integer applicantId;
 
     private String eventPlace;
 
@@ -21,9 +21,26 @@ public class ApplyEvent {
 
     private Date applyTime;
 
-    private String eventStatus;
+    private Integer eventStatus;
 
     private Date verifyTime;
+
+    public ApplyEvent() {
+    }
+
+    public ApplyEvent(Integer eventId, Integer assocId, String eventName, String eventIntro, Integer applicantId, String eventPlace, Date startTime, Date endTime, Date applyTime, Integer eventStatus, Date verifyTime) {
+        this.eventId = eventId;
+        this.assocId = assocId;
+        this.eventName = eventName;
+        this.eventIntro = eventIntro;
+        this.applicantId = applicantId;
+        this.eventPlace = eventPlace;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.applyTime = applyTime;
+        this.eventStatus = eventStatus;
+        this.verifyTime = verifyTime;
+    }
 
     public Integer getEventId() {
         return eventId;
@@ -57,12 +74,12 @@ public class ApplyEvent {
         this.eventIntro = eventIntro == null ? null : eventIntro.trim();
     }
 
-    public String getApplicantId() {
+    public Integer getApplicantId() {
         return applicantId;
     }
 
-    public void setApplicantId(String applicantId) {
-        this.applicantId = applicantId == null ? null : applicantId.trim();
+    public void setApplicantId(Integer applicantId) {
+        this.applicantId = applicantId;
     }
 
     public String getEventPlace() {
@@ -97,12 +114,12 @@ public class ApplyEvent {
         this.applyTime = applyTime;
     }
 
-    public String getEventStatus() {
+    public Integer getEventStatus() {
         return eventStatus;
     }
 
-    public void setEventStatus(String eventStatus) {
-        this.eventStatus = eventStatus == null ? null : eventStatus.trim();
+    public void setEventStatus(Integer eventStatus) {
+        this.eventStatus = eventStatus;
     }
 
     public Date getVerifyTime() {

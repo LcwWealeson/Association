@@ -17,6 +17,22 @@ public class Association {
 
     private Date estabTime;
 
+    private Integer adminId;
+
+    public Association() {
+    }
+
+    public Association(Integer id, String assocName, String assocIntro, Integer memberNum, String institution, String icon, Date estabTime, Integer adminId) {
+        this.id = id;
+        this.assocName = assocName;
+        this.assocIntro = assocIntro;
+        this.memberNum = memberNum;
+        this.institution = institution;
+        this.icon = icon;
+        this.estabTime = estabTime;
+        this.adminId = adminId;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -71,5 +87,13 @@ public class Association {
 
     public void setEstabTime(Date estabTime) {
         this.estabTime = estabTime;
+    }
+
+    public Integer getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(Integer adminId) {
+        this.adminId = adminId;
     }
 }
