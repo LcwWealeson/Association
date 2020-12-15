@@ -14,6 +14,14 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+    
+    int updateRoleById(Integer id);
+
+    User selectUserByName(String username);
+
+    Integer getIdByUser(String nickname);
+
+    int updatePassword(int userId, String newPassword);
 
     //自定义
     String getNameById(Integer userId);
