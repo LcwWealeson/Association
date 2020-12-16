@@ -6,6 +6,25 @@ public class UserVO extends User {
     private String collegeStr;
     private String majorStr;
     private String genderStr;
+    private Integer classNumber;
+    private String roleStr;
+
+
+    public Integer getClassNumber() {
+        return classNumber;
+    }
+
+    public void setClassNumber(Integer classNumber) {
+        this.classNumber = classNumber;
+    }
+
+    public String getRoleStr() {
+        return roleStr;
+    }
+
+    public void setRoleStr(String roleStr) {
+        this.roleStr = roleStr;
+    }
 
     public String getGenderStr() {
         return genderStr;

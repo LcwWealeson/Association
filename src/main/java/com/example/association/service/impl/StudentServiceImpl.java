@@ -38,10 +38,15 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public ServerResponse apply(ApplyAssociation applyAssociation) {
+
+        //先判断是否已经存在重名的社团
+        if (associationMapper.selectByAssocName(applyAssociation.getAssocName())!=null){
+            return ServerResponse.createBySuccessMessage("社团名字与现有社团重复，请重新输入一个社团名字！");
+        }
         int resultRow = applyAssociationMapper.insert(applyAssociation);
         applyAssociation.setAssocName("0");
         if(resultRow==0){
-            return ServerResponse.createByErrorMessage("插入失败");
+            return ServerResponse.createByErrorMessage("插入失败，成功提交社团申请");
         }
         return ServerResponse.createBySuccessMessage("插入成功");
     }

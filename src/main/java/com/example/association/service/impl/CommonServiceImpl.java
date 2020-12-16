@@ -39,8 +39,11 @@ public class CommonServiceImpl implements ICommonService {
     public ServerResponse register(User user) {
         String password = user.getPassword();
         String md5password = MD5Util.getMD5(password);
-        user.setRole(0);
+        user.setRole(1);
         user.setPassword(md5password);
+        if (userMapper.selectUserByName(user.getUsername())!=null){
+            return ServerResponse.createBySuccessMessage("已存在相同用户名的用户，请重新输入其他用户名");
+        }
         int resultRow = userMapper.insert(user);
         if(resultRow==0){
             return ServerResponse.createByErrorMessage("注册失败");

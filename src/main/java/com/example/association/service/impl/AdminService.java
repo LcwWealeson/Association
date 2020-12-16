@@ -94,7 +94,8 @@ public class AdminService implements IAdminService {
         for(Integer memberId:assocMembersId){
             memberList.add(userMapper.selectByPrimaryKey(memberId));
         }
-        return ServerResponse.createBySuccessMessage("当前社团的所有成员信息：",memberList);
+        List<com.example.association.vo.UserVO>memberInforList = userList2UserVOList(memberList);
+        return ServerResponse.createBySuccessMessage("当前社团的所有成员信息：",memberInforList);
     }
 
     /**
@@ -182,6 +183,7 @@ public class AdminService implements IAdminService {
             if (assocMemberMapper.getByMemberId(applicantId,associationId)==null){
                 rowInserAssocMember = assocMemberMapper.insertSelective(new AssocMember(applicantId,associationId));
             }else {
+                applyJoinAssocMapper.checkApplyJoinTo2(applyJoinAssocId,applicantId,associationId);
                 return ServerResponse.createBySuccessMessage("此人已在该社团中！请勿重复申请！");
             }
             rowCheck = applyJoinAssocMapper.checkApplyJoinTo1(applyJoinAssocId,applicantId,associationId);
@@ -292,10 +294,10 @@ public class AdminService implements IAdminService {
      * @param userList
      * @return
      */
-    public List<UserVO> userList2UserVOList(List<User> userList){
-        List<UserVO> userVOList = new ArrayList<>();
+    public List<com.example.association.vo.UserVO> userList2UserVOList(List<User> userList){
+        List<com.example.association.vo.UserVO> userVOList = new ArrayList<>();
         for (User user:userList){
-            UserVO userVO = new UserVO();
+            com.example.association.vo.UserVO userVO = new com.example.association.vo.UserVO();
 
             String college = academyMapper.selectByPrimaryKey(user.getCollege()).getAcademyName();
             String major = majorMapper.selectByPrimaryKey(user.getMajor()).getMajorName();
@@ -304,8 +306,19 @@ public class AdminService implements IAdminService {
             BeanUtils.copyProperties(user,userVO);
             userVO.setCollegeStr(college);
             userVO.setMajorStr(major);
-            userVO.setClassFrom(classNumber);
+            userVO.setClassNumber(classNumber);
             userVO.setGenderStr(gender);
+            switch (user.getRole()){
+                case 1:
+                    userVO.setRoleStr("学生");
+                    break;
+                case 2:
+                    userVO.setRoleStr("社团负责人");
+                    break;
+                case 3:
+                    userVO.setRoleStr("超级管理员");
+                    break;
+            }
 
             userVOList.add(userVO);
         }
@@ -313,20 +326,31 @@ public class AdminService implements IAdminService {
     }
 
     /**
-     * 将User转换成UserVO，添加
+     * 将User转换成UserVO，添加学院专业班级
      * @param user
      * @return
      */
-    public UserVO user2UserVO(User user){
-            UserVO userVO = new UserVO();
-            String college = academyMapper.selectByPrimaryKey(user.getCollege()).getAcademyName();
-            String major = majorMapper.selectByPrimaryKey(user.getMajor()).getMajorName();
-            Integer classNumber = classesMapper.selectByPrimaryKey(user.getClassFrom()).getClassNumber();
-            BeanUtils.copyProperties(user,userVO);
-            userVO.setCollegeStr(college);
-            userVO.setMajorStr(major);
-            userVO.setClassFrom(classNumber);
-            userVO.setGenderStr(user.getGender()==0?"男":"女");
+    public com.example.association.vo.UserVO user2UserVO(User user){
+        com.example.association.vo.UserVO userVO = new com.example.association.vo.UserVO();
+        String college = academyMapper.selectByPrimaryKey(user.getCollege()).getAcademyName();
+        String major = majorMapper.selectByPrimaryKey(user.getMajor()).getMajorName();
+        Integer classNumber = classesMapper.selectByPrimaryKey(user.getClassFrom()).getClassNumber();
+        BeanUtils.copyProperties(user,userVO);
+        userVO.setCollegeStr(college);
+        userVO.setMajorStr(major);
+        userVO.setClassNumber(classNumber);
+        userVO.setGenderStr(user.getGender()==0?"男":"女");
+        switch (user.getRole()){
+            case 1:
+                userVO.setRoleStr("学生");
+                break;
+            case 2:
+                userVO.setRoleStr("社团负责人");
+                break;
+            case 3:
+                userVO.setRoleStr("超级管理员");
+                break;
+        }
         return userVO;
     }
 
@@ -366,11 +390,13 @@ public class AdminService implements IAdminService {
             String timeApply;
             ApplyJoinAssocVO applyJoinAssocVO = new ApplyJoinAssocVO();
             User applicant = userMapper.selectByPrimaryKey(applyJoinAssoc.getApplicantId());
+            UserVO userVO = user2UserVO(applicant);
+
             timeApply=DateUtil.dateToStr(applyJoinAssoc.getAppTime());
 
             BeanUtils.copyProperties(applyJoinAssoc,applyJoinAssocVO);
 
-            applyJoinAssocVO.setApplicant(applicant);
+            applyJoinAssocVO.setApplicant(userVO);
             applyJoinAssocVO.setTimeApply(timeApply);
             applyJoinAssocVOList.add(applyJoinAssocVO);
 

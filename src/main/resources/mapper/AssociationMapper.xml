@@ -159,4 +159,16 @@
     from association
     where assoc_name like concat('%',#{assocName},'%')
   </select>
+
+  <select id="selectByAssocName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from association
+    where assoc_name = #{assocName,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectAssociationCountByadminId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select COUNT(assoc_name)
+    FROM association
+    WHERE adminId=#{adminId};
+  </select>
 </mapper>

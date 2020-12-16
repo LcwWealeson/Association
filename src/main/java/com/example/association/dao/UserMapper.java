@@ -25,4 +25,6 @@ public interface UserMapper {
 
     //自定义
     String getNameById(Integer userId);
+
+    int updateRoleTo1ById(Integer adminId);
 }
