@@ -26,4 +26,8 @@ public interface AssociationMapper {
     int decreaseMemberNumberByAssocId(Integer associationId, Integer gap);
 
     List<Association> selectAssociationByAdminId(Integer adminId);
+
+    Association selectByAssocName(String assocName);
+
+    Integer selectAssociationCountByadminId(Integer adminId);
 }

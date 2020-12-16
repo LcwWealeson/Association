@@ -169,7 +169,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="selectUserByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectUserByName" parameterType="java.lang.String" resultType="com.example.association.pojo.User">
     select *
     from user
     where username = #{username,jdbcType=VARCHAR}
@@ -187,4 +187,9 @@
     where id = #{userId,jdbcType=INTEGER}
   </update>
 
+  <update id="updateRoleTo1ById">
+    update user
+    set role = 1
+    where id = #{adminId,jdbcType=INTEGER}
+  </update>
 </mapper>

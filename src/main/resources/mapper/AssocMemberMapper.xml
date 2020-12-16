@@ -87,4 +87,10 @@
     from assoc_member
     where member_id = #{applicantId} and assoc_id = #{associationId}
   </select>
+
+  <delete id="clearMemberOfAssocByAssocId" parameterType="java.lang.Integer">
+    delete
+    from assoc_member
+    where assoc_id = #{associationId,jdbcType=INTEGER}
+  </delete>
 </mapper>

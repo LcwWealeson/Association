@@ -1,16 +1,11 @@
 package com.example.association.service.impl;
 
+import com.example.association.dao.*;
+import com.example.association.pojo.*;
 import com.example.association.service.ISuperAdminService;
 import com.example.association.vo.ApplyAssociationVO;
 import com.example.association.vo.ApplyEventVO;
 import com.example.association.common.ServerResponse;
-import com.example.association.dao.ApplyAssociationMapper;
-import com.example.association.dao.ApplyEventMapper;
-import com.example.association.dao.AssociationMapper;
-import com.example.association.dao.UserMapper;
-import com.example.association.pojo.ApplyAssociation;
-import com.example.association.pojo.ApplyEvent;
-import com.example.association.pojo.Association;
 import com.example.association.utils.DateUtil;
 import com.example.association.utils.MD5Util;
 import org.springframework.beans.BeanUtils;
@@ -35,6 +30,10 @@ public class SuperAdminServiceImpl implements ISuperAdminService {
     @Autowired
     ApplyEventMapper applyEventMapper;
 
+    @Autowired
+    AssocMemberMapper assocMemberMapper;
+
+
     @Override
     public ServerResponse checkApplyAssociation(int applyId, int adminId, int operation) {
         ApplyAssociation applyAssociation = applyAssociationMapper.selectByPrimaryKey(applyId);
@@ -47,13 +46,19 @@ public class SuperAdminServiceImpl implements ISuperAdminService {
             association.setAssocName(applyAssociation.getAssocName());
             association.setEstabTime(applyAssociation.getVerifyTime());
             association.setAdminId(applyAssociation.getUserId());
+            association.setMemberNum(1);
             associationMapper.insert(association);//审批通过后插入社团
             userMapper.updateRoleById(applyAssociation.getUserId());//将申请人升级为社团负责人
-            return ServerResponse.createBySuccessMessage("审批通过");
+
+            //获取新插入的社团实体，包含id
+            Association newAssoc= associationMapper.selectByAssocName(association.getAssocName());
+            //向社团成员关系表中添加本社团负责人与社团的关联，他也算一个社团成员
+            assocMemberMapper.insertSelective(new AssocMember(newAssoc.getAdminId(),newAssoc.getId()));
+            return ServerResponse.createBySuccessMessage("审批通过，成立新社团"+newAssoc.getAssocName()+"成功");
         }if(operation==2){
             applyAssociation.setApplyStatus(2);
             applyAssociationMapper.updateByPrimaryKeySelective(applyAssociation);
-            return ServerResponse.createBySuccessMessage("审批不通过");
+            return ServerResponse.createBySuccessMessage("审批不通过，成立新社团失败");
         }
         return ServerResponse.createByError();
     }
@@ -112,6 +117,28 @@ public class SuperAdminServiceImpl implements ISuperAdminService {
             return ServerResponse.createByErrorMessage("修改失败");
         }
         return ServerResponse.createBySuccessMessage("修改成功");
+    }
+
+
+    /**
+     * 删除某个社团
+     * @param associationId
+     * @return
+     */
+    @Override
+    public ServerResponse removeAssociation(Integer associationId) {
+        Association association = associationMapper.selectByPrimaryKey(associationId);
+        Integer adminId = association.getAdminId();
+        //判断当前社团的负责人是否也是其他社团的负责人，若名下的社团总数只有一个，则还原他的role为1
+        //若社团总数不止一个，总不还原他的role，role依然是2
+        if (associationMapper.selectAssociationCountByadminId(adminId)==1){
+            //将社团负责人的role还原为学生role——1
+            int rowUpdate = userMapper.updateRoleTo1ById(adminId);
+        }
+        //清空与该社团相关的所有社团成员关系
+        int rowclear = assocMemberMapper.clearMemberOfAssocByAssocId(associationId);
+        int rowDelete = associationMapper.deleteByPrimaryKey(associationId);
+        return ServerResponse.createBySuccessMessage("成功删除"+association.getAssocName());
     }
 
     public List<ApplyEventVO> applyEvent2ApplyEventVO(List<ApplyEvent> applyEventList){

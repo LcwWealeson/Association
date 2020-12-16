@@ -29,7 +29,7 @@ public class SuperadminController {
     //查看社团的申请
     @GetMapping("/getAssociationCheckList")
     @ApiOperation(value = "查看社团的申请",notes = "有参数传入时就模糊查询，没有就获取全部")
-    public ServerResponse getCheckList(@ApiParam(name = "assocName",value = "社团名字",required = true) String assocName){
+    public ServerResponse getCheckList(@ApiParam(name = "assocName",value = "社团名字") String assocName){
         return iSuperAdminService.getCheckAssociationList(assocName);
     }
 
@@ -42,7 +42,7 @@ public class SuperadminController {
         return iSuperAdminService.getEventCheckList(eventName,assocName,applicant);
     }
 
-    //审核活动的申请e
+    //审核活动的申请
     @GetMapping("/checkApplyEvent")
     @ApiOperation(value = "审核活动的申请",notes = "需要传入活动申请id和操作operation两个参数")
     public ServerResponse checkApplyEvent(@ApiParam(name = "eventId",value = "活动申请id",required = true) int eventId,
@@ -50,11 +50,20 @@ public class SuperadminController {
         return iSuperAdminService.checkApplyEvent(eventId,operation);
     }
 
+    //修改密码
     @GetMapping("/changePassword")
     @ApiOperation(value = "修改密码",notes = "需要传入用户id和新密码newPassword两个参数")
     public ServerResponse changePassword(@ApiParam(name = "userId",value = "用户id",required = true) int userId,
                                          @ApiParam(name = "newPassword",value = "新密码newPassword",required = true) String newPassword){
         return iSuperAdminService.changePassword(userId,newPassword);
+    }
+
+    //删除社团，需要删除社团信息以及社团成员关系
+    @GetMapping("/removeAssociationByAssocId")
+    @ApiOperation(value = "删除某个社团",notes = "传入社团id，删除社团信息以及社团相关的社团成员关系")
+    public ServerResponse removeAssociation(@ApiParam(name = "associationId",value = "社团id",required =true )
+                                                        Integer associationId){
+        return iSuperAdminService.removeAssociation(associationId);
     }
 
 }

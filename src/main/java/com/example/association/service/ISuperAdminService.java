@@ -14,4 +14,6 @@ public interface ISuperAdminService {
     ServerResponse checkApplyEvent(int eventId, int operation);
 
     ServerResponse changePassword(int userId,String newPassword);
+
+    ServerResponse removeAssociation(Integer associationId);
 }
