@@ -6,10 +6,7 @@ import com.example.association.pojo.*;
 import com.example.association.service.IAdminService;
 import com.example.association.utils.DateUtil;
 import com.example.association.utils.ExcelUtil;
-import com.example.association.vo.ApplyEventVO;
-import com.example.association.vo.ApplyJoinAssocVO;
-import com.example.association.vo.ApplyParticipationVO;
-import com.example.association.vo.UserVO;
+import com.example.association.vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,8 +63,23 @@ public class AdminService implements IAdminService {
      */
     @Override
     public ServerResponse getAssociationInfor(Integer associationId) {
-        return ServerResponse.createBySuccessMessage("成功获取当前社团的详细信息",associationMapper.selectByPrimaryKey(associationId));
+        AssociationVO associationVO = association2AssociationVO(associationMapper.selectByPrimaryKey(associationId));
+        return ServerResponse.createBySuccessMessage("成功获取当前社团的详细信息",associationVO);
     }
+
+    /**
+     * Association转化成AssociationVO，增加字符串时间
+     * @param association
+     * @return
+     */
+    public AssociationVO association2AssociationVO(Association association){
+        AssociationVO associationVO = new AssociationVO();
+        BeanUtils.copyProperties(association,associationVO);
+        String time = DateUtil.dateToStr(association.getEstabTime());
+        associationVO.setDateTime(time);
+        return associationVO;
+    }
+
 
     /**
      * 申请一个活动，提交申请表，此时申请表的状态为“未审核”
