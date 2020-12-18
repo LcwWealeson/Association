@@ -5,8 +5,9 @@ import com.example.association.pojo.ApplyEvent;
 import com.example.association.pojo.Association;
 import com.example.association.pojo.Notice;
 import com.example.association.service.IAdminService;
-import io.swagger.annotations.*;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,8 +55,19 @@ public class AdminController {
     //发布社团通知
     @PostMapping("/publishNoticeByAssocId")
     @ApiOperation(value = "发布社团通知",notes = "传入社团通知的title，内容noticeContent，社团的id associationId")
-    public ServerResponse publishNotice(@ApiParam(name = "notice",value = "通知实体",required = true) @RequestBody Notice notice){
+    public ServerResponse publishNotice(@ApiParam(name = "notice",value = "通知实体",required = true)
+                                            @RequestBody Notice notice){
         return adminService.publishNotice(notice);
+    }
+
+
+    //修改社团信息
+    @PostMapping("/modifyAssociation")
+    @ApiOperation(value = "修改某个社团信息",
+            notes = "传入一个社团实体association修改社团信息,用json传入一个association对象")
+    public ServerResponse modifyAssociation(@ApiParam(name = "association",value = "社团实体",required = true)
+                                                @RequestBody Association association){
+        return adminService.modifyAssociation(association);
     }
 
     //获取所有已申请活动（包含未审核、已审核通过、未通过审核的活动）,可以点进去看某活动的报名人员名单
@@ -111,14 +123,7 @@ public class AdminController {
         adminService.getSignInExcelByEventId(eventId,response);
     }
 
-    //修改社团信息
-    @PostMapping("/modifyAssociation")
-    @ApiOperation(value = "修改某个社团信息",
-            notes = "传入一个社团实体association修改社团信息,用json传入一个association对象")
-    public ServerResponse modifyAssociation(@ApiParam(name = "association",value = "社团json实体",required = true)
-            @RequestBody Association association){
-        return adminService.modifyAssociation(association);
-    }
+
 
     //显示申请加入社团的人员列表
     @GetMapping("/getApplyJoinAssocList")

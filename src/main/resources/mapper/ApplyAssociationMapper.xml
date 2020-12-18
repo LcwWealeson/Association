@@ -14,7 +14,7 @@
     id, assoc_name, user_id, apply_reason, apply_status, admin_id, verify_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from apply_association
     where id = #{id,jdbcType=INTEGER}
@@ -115,14 +115,14 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-<!--  自定义Mapper-->
+  <!--  自定义Mapper-->
   <select id="selectList" parameterType="java.lang.String" resultMap="BaseResultMap">
     select *
     from apply_association
     <where>
-        <if test="assocName!=null and assocName !=''">
-           assoc_name like concat('%',#{assocName},'%')
-        </if>
+      <if test="assocName!=null and assocName !=''">
+        assoc_name like concat('%',#{assocName},'%')
+      </if>
     </where>
   </select>
 </mapper>

@@ -139,7 +139,7 @@
     where id = #{associationId,jdbcType=INTEGER}
   </update>
 
-  <select id="selectAssociationByAdminId" parameterType="java.lang.Integer">
+  <select id="selectAssociationByAdminId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select *
     from association
     where adminId = #{adminId,jdbcType=INTEGER}

@@ -18,5 +18,4 @@ public interface ApplyAssociationMapper {
     int updateByPrimaryKey(ApplyAssociation record);
 
     List<ApplyAssociation> selectList(String assocName);
-
 }
