@@ -143,6 +143,35 @@ public class AdminService implements IAdminService {
     }
 
     /**
+     * 查看某个社团的通知，若没有发布过则返回提示
+     * @param assocId
+     * @return
+     */
+    @Override
+    public ServerResponse getNoticeByAssocId(Integer assocId) {
+        Notice notice = noticeMapper.selectByAssocId(assocId);
+        if (notice==null){
+            return ServerResponse.createBySuccessMessage("本社团未发过通知");
+        }
+        return ServerResponse.createBySuccessMessage("本社团已发布的通知",notice);
+    }
+
+    /**
+     * Notice转化成NoticeVO，增加字符串时间
+     * @param notice
+     * @return
+     */
+    public NoticeVO notice2NoticeVO(Notice notice){
+        NoticeVO noticeVO = new NoticeVO();
+        String timePublish="";
+        BeanUtils.copyProperties(notice,noticeVO);
+        noticeVO.setTimePublish(timePublish);
+        noticeVO.setTimePublish(timePublish);
+        return noticeVO;
+    }
+
+
+    /**
      * 查看所有已申请的活动（包含未审核、已通过审核、未通过审核)
      * @param applicantId
      * @return

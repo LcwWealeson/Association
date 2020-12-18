@@ -52,6 +52,13 @@ public class AdminController {
         return adminService.getMember(associationId);
     }
 
+    //查看社团通知
+    @GetMapping("/getNoticeByAssocId")
+    @ApiOperation(value = "获取某个社团通知",notes = "社团的id")
+    public ServerResponse getNoticeByAssocId(Integer assocId){
+        return adminService.getNoticeByAssocId(assocId);
+    }
+
     //发布社团通知
     @PostMapping("/publishNoticeByAssocId")
     @ApiOperation(value = "发布社团通知",notes = "传入社团通知的title，内容noticeContent，社团的id associationId")
