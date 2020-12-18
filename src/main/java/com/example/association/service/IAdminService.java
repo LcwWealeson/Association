@@ -39,4 +39,6 @@ public interface IAdminService {
     ServerResponse getAssociationInfor(Integer associationId);
 
     ServerResponse getAllAssociations(Integer adminId);
+
+    ServerResponse getNoticeByAssocId(Integer assocId);
 }
