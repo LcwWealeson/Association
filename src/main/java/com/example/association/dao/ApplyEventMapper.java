@@ -23,4 +23,5 @@ public interface ApplyEventMapper {
     
     List<ApplyEvent> selectByApplicantId(Integer applicantId);
 
+    List<ApplyEvent> selectByEventName(String eventName);
 }

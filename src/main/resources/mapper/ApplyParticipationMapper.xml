@@ -100,7 +100,14 @@
   </select>
 
   <select id="getAllApplyParticipantsByEventId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select * from apply_participation
+    select *
+    from apply_participation
     where event_id = #{eventId}
+  </select>
+
+  <select id="selectNotWith2" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
+    from apply_participation
+    where participant_id=#{userId,jdbcType=INTEGER} and event_id=#{eventId,jdbcType=INTEGER} and event_app_status !=2
   </select>
 </mapper>

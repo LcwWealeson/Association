@@ -38,7 +38,10 @@ public class AdminController {
 
     //申请举办活动
     @PostMapping("/applyEvent")
-    @ApiOperation(value = "社团负责人申请举办活动",notes = "传入一个ApplyEvent实体，进行申请活动的表单提交，开始结束时间要注意先后")
+    @ApiOperation(value = "社团负责人申请举办活动，eventID、applyTime、eventStatus和verifyTime不提交",notes = "传入一个ApplyEvent实体，进行申请活动的表单提交;" +
+            "地点可多个（用“，”分隔开），开始结束时间要注意先后；申请一个活动，提交申请表，此时申请表的状态为“未审核”，" +
+            "检查是否存在重复名字，若重复检查地点" +
+            "若地点重复检查时间是否存在重叠部分")
     public ServerResponse applyEvent(@ApiParam(name = "applyEventInfo",value = "申请活动的表单实体",required = true)
                                      @RequestBody ApplyEvent applyEventInfo){
         return adminService.applyEvent(applyEventInfo);
@@ -61,7 +64,7 @@ public class AdminController {
 
     //发布社团通知
     @PostMapping("/publishNoticeByAssocId")
-    @ApiOperation(value = "发布社团通知",notes = "传入社团通知的title，内容noticeContent，社团的id associationId")
+    @ApiOperation(value = "发布社团通知，id和publishTime不提交",notes = "传入社团通知的title，内容content，社团的id assocId")
     public ServerResponse publishNotice(@ApiParam(name = "notice",value = "通知实体",required = true)
                                             @RequestBody Notice notice){
         return adminService.publishNotice(notice);
@@ -70,7 +73,7 @@ public class AdminController {
 
     //修改社团信息
     @PostMapping("/modifyAssociation")
-    @ApiOperation(value = "修改某个社团信息",
+    @ApiOperation(value = "修改某个社团信息，estabTime不提交",
             notes = "传入一个社团实体association修改社团信息,用json传入一个association对象")
     public ServerResponse modifyAssociation(@ApiParam(name = "association",value = "社团实体",required = true)
                                                 @RequestBody Association association){

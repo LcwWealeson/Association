@@ -167,7 +167,7 @@
   <select id="selectByApplicantId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
   select *
   from apply_event
-  where applicant_id = #{applicantId}
+  where applicant_id = #{applicantId,jdbcType=INTEGER}
     </select>
 
   <select id="getList" parameterType="com.example.association.pojo.ApplyEvent" resultMap="BaseResultMap">
@@ -178,10 +178,10 @@
         OR event_name like concat('%',#{eventName},'%')
       </if>
       <if test="assocId!=null and assocId!=''">
-        OR assoc_id = #{assocId}
+        OR assoc_id = #{assocId,jdbcType=INTEGER}
       </if>
       <if test="applicantId!=null and applicantId!=''">
-        OR applicant_id = #{applicantId}
+        OR applicant_id = #{applicantId,jdbcType=INTEGER}
       </if>
     </where>
   </select>
@@ -190,6 +190,12 @@
     select *
     from apply_event
     where event_status = 1
+  </select>
+
+  <select id="selectByEventName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from apply_event
+    where event_name=#{eventName} and event_status !=2
   </select>
 
 </mapper>

@@ -125,4 +125,16 @@
       </if>
     </where>
   </select>
+
+  <select id="getByApplicantId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
+    from apply_association
+    where user_id=#{applicantId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByAssocNameNotWith2" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from apply_association
+    where assoc_name = #{asscoName,jdbcType=VARCHAR} and apply_status != 2
+  </select>
 </mapper>

@@ -6,6 +6,8 @@ import com.example.association.pojo.User;
 public class ApplyJoinAssocVO extends ApplyJoinAssoc {
     private User applicant;
     private String timeApply;
+    private String assocName;
+    private String status;
 
     public User getApplicant() {
         return applicant;
@@ -21,5 +23,21 @@ public class ApplyJoinAssocVO extends ApplyJoinAssoc {
 
     public void setTimeApply(String timeApply) {
         this.timeApply = timeApply;
+    }
+
+    public String getAssocName() {
+        return assocName;
+    }
+
+    public void setAssocName(String assocName) {
+        this.assocName = assocName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

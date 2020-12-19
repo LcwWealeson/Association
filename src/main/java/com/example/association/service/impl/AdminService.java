@@ -82,12 +82,66 @@ public class AdminService implements IAdminService {
 
 
     /**
-     * 申请一个活动，提交申请表，此时申请表的状态为“未审核”
+     * 申请一个活动，提交申请表，此时申请表的状态为“未审核”，检查是否存在重复名字，若重复检查地点，
+     * 若地点重复检查时间是否存在重叠部分
      * @param applyEventInfor
      * @return
      */
     @Override
     public ServerResponse applyEvent(ApplyEvent applyEventInfor) {
+        //对输入的开始和结束时间进行归一化的处理，使得Date类型的时间的mills为0
+        String dateStartStr = DateUtil.dateToStr(applyEventInfor.getStartTime());
+        String dateEndStr = DateUtil.dateToStr(applyEventInfor.getEndTime());
+        Date dateStart = DateUtil.strToDate(dateStartStr);
+        Date dateEnd = DateUtil.strToDate(dateEndStr);
+        //获取已经申请并且没有被拒绝通过的活动
+        List<ApplyEvent> applyEventList = applyEventMapper.selectByEventName(applyEventInfor.getEventName());
+        for (ApplyEvent applyEvent:applyEventList){
+            if (applyEventMapper.selectByEventName(applyEventInfor.getEventName())!=null){
+                //若活动名称相同并且地点还相同，比较时间的先后或包含关系
+                if (applyEvent.getEventPlace().equals(applyEventInfor.getEventPlace())){
+                    //原有活动的时间范围包含了申请的活动时间范围
+                    if (applyEvent.getStartTime().compareTo(dateStart)<0&&applyEvent.getEndTime().compareTo(dateEnd)>0){
+                        return ServerResponse.createBySuccessMessage("同一个活动时间出现重叠部分！请重新设定时间！" +
+                                "原有活动的时间范围包含了申请的活动时间范围");
+                    }
+                    //申请的活动时间范围包含了原有活动的时间范围
+                    else if (applyEvent.getStartTime().compareTo(dateStart)>0&&applyEvent.getEndTime().compareTo(dateEnd)<0){
+                        return ServerResponse.createBySuccessMessage("同一个活动时间出现重叠部分！请重新设定时间！" +
+                                "申请的活动时间范围包含了原有活动的时间范围");
+                    }
+                    //申请的活动开始时间比原有活动开始时间早，但结束时间被包含于原有时间范围内
+                    else if (applyEvent.getStartTime().compareTo(dateStart)>0&&applyEvent.getEndTime().compareTo(dateEnd)>0&&
+                            applyEvent.getStartTime().compareTo(dateEnd)<0){
+                        return ServerResponse.createBySuccessMessage("同一个活动时间出现重叠部分！请重新设定时间！" +
+                                "申请的活动开始时间比原有活动开始时间早，但结束时间被包含于原有时间范围内");
+                    }
+                    //申请的活动结束时间比原有活动结束时间晚，但开始时间被包含于原有时间范围内
+                    else if (applyEvent.getStartTime().compareTo(dateStart)<0&&applyEvent.getEndTime().compareTo(dateStart)>0&&
+                            applyEvent.getEndTime().compareTo(dateEnd)<0){
+                        return ServerResponse.createBySuccessMessage("同一个活动时间出现重叠部分！请重新设定时间！" +
+                                "申请的活动结束时间比原有活动结束时间晚，但开始时间被包含于原有时间范围内");
+                    }
+                    //同样起始时间不同结束时间
+                    else if (applyEvent.getStartTime().compareTo(dateStart)==0&&
+                            applyEvent.getEndTime().compareTo(dateEnd)!=0){
+                        return ServerResponse.createBySuccessMessage("申请活动或成功申请活动中存在同样起始时间但不同结束时间的记录" +
+                                "，请重新设定起始时间");
+                    }
+                    //同样结束时间不同开始时间
+                    else if (applyEvent.getEndTime().compareTo(dateEnd)==0&&
+                            applyEvent.getStartTime().compareTo(dateStart)!=0){
+                        return ServerResponse.createBySuccessMessage("申请活动或成功申请活动中存在同样结束时间但不同起始时间的记录" +
+                                "，请重新设定结束时间");
+                    }
+                    //存在开始和结束时间一样的已申请活动记录
+                    else if (applyEvent.getStartTime().compareTo(dateStart)==0&&
+                            applyEvent.getEndTime().compareTo(dateEnd)==0){
+                        return ServerResponse.createBySuccessMessage("存在同名活动，并且时间相同。");
+                    }
+                }
+            }
+        }
         applyEventInfor.setApplyTime(new Date());
         int row = applyEventMapper.insertSelective(applyEventInfor);
         return ServerResponse.createBySuccessMessage("申请活动"+row+"个，待审核。");
@@ -221,7 +275,7 @@ public class AdminService implements IAdminService {
         int rowInserAssocMember=0;
         int rowUpdateAssocMember=0;
         if (applyJoinAssocId!=null&&applicantId!=null&&associationId!=null){
-            if (assocMemberMapper.getByMemberId(applicantId,associationId)==null){
+            if (assocMemberMapper.getByMemberIdAndAssocId(applicantId,associationId)==null){
                 rowInserAssocMember = assocMemberMapper.insertSelective(new AssocMember(applicantId,associationId));
             }else {
                 applyJoinAssocMapper.checkApplyJoinTo2(applyJoinAssocId,applicantId,associationId);
@@ -244,7 +298,7 @@ public class AdminService implements IAdminService {
     public ServerResponse checkApplyJoinTo2(Integer applyJoinAssocId, Integer applicantId, Integer associationId) {
         int rowCheck=0;
         if (applyJoinAssocId!=null&&applicantId!=null&&associationId!=null){
-            if (assocMemberMapper.getByMemberId(applicantId,associationId)==null){
+            if (assocMemberMapper.getByMemberIdAndAssocId(applicantId,associationId)==null){
                 assocMemberMapper.insertSelective(new AssocMember(applicantId,associationId));
             }else {
                 return ServerResponse.createBySuccessMessage("此人已在该社团中！请勿重复申请加入该社团！");
@@ -335,11 +389,10 @@ public class AdminService implements IAdminService {
      * @param userList
      * @return
      */
-    public List<com.example.association.vo.UserVO> userList2UserVOList(List<User> userList){
-        List<com.example.association.vo.UserVO> userVOList = new ArrayList<>();
+    public List<UserVO> userList2UserVOList(List<User> userList){
+        List<UserVO> userVOList = new ArrayList<>();
         for (User user:userList){
-            com.example.association.vo.UserVO userVO = new com.example.association.vo.UserVO();
-
+            UserVO userVO = new UserVO();
             String college = academyMapper.selectByPrimaryKey(user.getCollege()).getAcademyName();
             String major = majorMapper.selectByPrimaryKey(user.getMajor()).getMajorName();
             Integer classNumber = classesMapper.selectByPrimaryKey(user.getClassFrom()).getClassNumber();
@@ -371,8 +424,8 @@ public class AdminService implements IAdminService {
      * @param user
      * @return
      */
-    public com.example.association.vo.UserVO user2UserVO(User user){
-        com.example.association.vo.UserVO userVO = new com.example.association.vo.UserVO();
+    public UserVO user2UserVO(User user){
+        UserVO userVO = new UserVO();
         String college = academyMapper.selectByPrimaryKey(user.getCollege()).getAcademyName();
         String major = majorMapper.selectByPrimaryKey(user.getMajor()).getMajorName();
         Integer classNumber = classesMapper.selectByPrimaryKey(user.getClassFrom()).getClassNumber();
@@ -417,8 +470,6 @@ public class AdminService implements IAdminService {
         }
         return applyParticipationVOList;
     }
-
-
 
     /**
      * ApplyJoinAssoc 和 ApplyJoinAssocVO的转换，增加 User，将时间转成String类型

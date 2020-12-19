@@ -21,7 +21,9 @@ public interface AssocMemberMapper {
 
     int removeMemberById(Integer memberId, Integer associationId);
 
-    Integer getByMemberId(Integer applicantId, Integer associationId);
+    Integer getByMemberIdAndAssocId(Integer applicantId, Integer associationId);
 
     int clearMemberOfAssocByAssocId(Integer associationId);
+
+    List<AssocMember> getByMemberId(Integer memberId);
 }
