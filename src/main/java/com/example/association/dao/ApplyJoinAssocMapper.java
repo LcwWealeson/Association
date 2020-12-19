@@ -1,6 +1,7 @@
 package com.example.association.dao;
 
 import com.example.association.pojo.ApplyJoinAssoc;
+import com.example.association.vo.ApplyJoinAssocVO;
 
 import java.util.List;
 
@@ -22,4 +23,8 @@ public interface ApplyJoinAssocMapper {
     int checkApplyJoinTo1(Integer applyJoinAssocId, Integer applicantId, Integer associationId);
 
     int checkApplyJoinTo2(Integer applyJoinAssocId, Integer applicantId, Integer associationId);
+
+    List<ApplyJoinAssocVO> getByUserIdAndAssocId(Integer applicantId);
+
+    ApplyJoinAssoc selectNotWith2(int userId, int associationId);
 }

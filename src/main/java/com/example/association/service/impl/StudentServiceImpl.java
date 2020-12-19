@@ -1,8 +1,7 @@
 package com.example.association.service.impl;
 
 import com.example.association.service.IStudentService;
-import com.example.association.vo.ApplyEventVO;
-import com.example.association.vo.AssociationVO;
+import com.example.association.vo.*;
 import com.example.association.common.ServerResponse;
 import com.example.association.dao.*;
 import com.example.association.pojo.*;
@@ -36,12 +35,16 @@ public class StudentServiceImpl implements IStudentService {
     @Autowired
     ApplyEventMapper applyEventMapper;
 
+    @Autowired
+    NoticeMapper noticeMapper;
     @Override
     public ServerResponse apply(ApplyAssociation applyAssociation) {
 
         //先判断是否已经存在重名的社团
         if (associationMapper.selectByAssocName(applyAssociation.getAssocName())!=null){
             return ServerResponse.createBySuccessMessage("社团名字与现有社团重复，请重新输入一个社团名字！");
+        }else if (applyAssociationMapper.selectByAssocNameNotWith2(applyAssociation.getAssocName())!=null){
+            return ServerResponse.createBySuccessMessage("您已提交申请成立该社团，请不要重复提交！请等待审核或查看审核该申请的审核状态！");
         }
         int resultRow = applyAssociationMapper.insert(applyAssociation);
         applyAssociation.setAssocName("0");
@@ -65,11 +68,22 @@ public class StudentServiceImpl implements IStudentService {
         return ServerResponse.createBySuccessMessage("查询成功",associationVOS);
     }
 
+    /**
+     * 申请加入社团，先检查是否已发起申请
+     * @param userId
+     * @param associationId
+     * @return
+     */
     @Override
     public ServerResponse applyJoinAssociation(int userId, int associationId) {
+        if (applyJoinAssocMapper.selectNotWith2(userId,associationId)!=null){
+            return ServerResponse.createBySuccessMessage("您已发起加入该社团的申请，请不要重复提交！" +
+                    "请等待查看申请状态或查看审核状态！");
+        }
         ApplyJoinAssoc applyJoinAssoc = new ApplyJoinAssoc();
         applyJoinAssoc.setApplicantId(userId);
         applyJoinAssoc.setAssocId(associationId);
+        applyJoinAssoc.setAppTime(new Date());
         int resultRow = applyJoinAssocMapper.insertSelective(applyJoinAssoc);
         if(resultRow==0){
             return ServerResponse.createByErrorMessage("申请失败");
@@ -79,6 +93,10 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public ServerResponse applyJoinEvent(int userId, int eventId) {
+        if (applyParticipationMapper.selectNotWith2(userId,eventId)!=null){
+            return ServerResponse.createBySuccessMessage("您已申请报名参加此活动，请勿重复提交申请！" +
+                    "请等待审核或者查看审核状态");
+        }
         ApplyEvent applyEvent = applyEventMapper.selectByPrimaryKey(eventId);
         Date date = new Date();
         if(date.compareTo(applyEvent.getStartTime())<0) {
@@ -97,6 +115,125 @@ public class StudentServiceImpl implements IStudentService {
     public ServerResponse getCheckedEvent() {
         List<ApplyEvent> applyEvents = applyEventMapper.selectByStatusIs1();
         return ServerResponse.createBySuccessMessage("查询成功",applyEvent2ApplyEventVO(applyEvents));
+    }
+
+    /**
+     * 查看已加入的社团以及对应社团的通知
+     * @param memberId
+     * @return
+     */
+    @Override
+    public ServerResponse getHasJoinedAssocAndNotice(Integer memberId) {
+        List<AssocMemberVO> assocMemberVOList = assocMember2AssocMemberVO(assocMemberMapper.getByMemberId(memberId));
+        return ServerResponse.createBySuccessMessage("获取已加入的社团以及社团的通知",assocMemberVOList);
+    }
+
+    /**
+     * AssocMember转化成AssocMemberVO，增加社团和通知详细
+     * @param assocMemberList
+     * @return
+     */
+    public List<AssocMemberVO> assocMember2AssocMemberVO(List<AssocMember> assocMemberList){
+        List<AssocMemberVO> assocMemberVOList = new ArrayList<>();
+        for (AssocMember assocMember:assocMemberList){
+            AssocMemberVO assocMemberVO = new AssocMemberVO();
+            BeanUtils.copyProperties(assocMember,assocMemberVO);
+            assocMemberVO.setNotice(noticeMapper.selectByAssocId(assocMember.getAssocId()));
+            assocMemberVO.setAssociation(associationMapper.selectByPrimaryKey(assocMember.getAssocId()));
+            assocMemberVOList.add(assocMemberVO);
+        }
+        return assocMemberVOList;
+    }
+
+
+    /**
+     * 查看所有申请加入社团的申请状态，包含审核未审核
+     * @param applicantId
+     * @return
+     */
+    @Override
+    public ServerResponse getApplyJoinAssocByUserId(Integer applicantId) {
+        List<ApplyJoinAssocVO> applyJoinAssocVO = applyJoinAssocMapper.getByUserIdAndAssocId(applicantId);
+        for (ApplyJoinAssocVO a:applyJoinAssocVO){
+            a.setTimeApply(DateUtil.dateToStr(a.getAppTime()));
+            switch (a.getAppStatus()){
+                case 0:
+                    a.setStatus("未审核");
+                    break;
+                case 1:
+                    a.setStatus("已审核通过");
+                    break;
+                case 2:
+                    a.setStatus("已审核不通过");
+                    break;
+            }
+        }
+        return ServerResponse.createBySuccessMessage("获取申请加入社团的申请状态",applyJoinAssocVO);
+    }
+
+
+    /**
+     * 获取申请新社团的状态信息
+     * @param applicantId
+     * @return
+     */
+    @Override
+    public ServerResponse getApplyNewAssocByApplicantId(Integer applicantId) {
+        List<ApplyAssociationVO> applyAssociationVOList = applyAssociation2ApplyAssociationVO(
+                applyAssociationMapper.getByApplicantId(applicantId));
+        return ServerResponse.createBySuccessMessage("获取申请新社团的状态信息",applyAssociationVOList);
+    }
+
+    /**
+     * ApplyJoinAssoc 和 ApplyJoinAssocVO的转换，将时间转成String类型
+     * @param applyJoinAssocList
+     * @return
+     */
+    public List<ApplyJoinAssocVO> applyJoinAssoc2ApplyJoinAssocVO(List<ApplyJoinAssoc> applyJoinAssocList){
+        List<ApplyJoinAssocVO> applyJoinAssocVOList = new ArrayList<>();
+        for (ApplyJoinAssoc applyJoinAssoc:applyJoinAssocList){
+            String timeApply;
+            ApplyJoinAssocVO applyJoinAssocVO = new ApplyJoinAssocVO();
+//            User applicant = userMapper.selectByPrimaryKey(applyJoinAssoc.getApplicantId());
+//            UserVO userVO = user2UserVO(applicant);
+
+            timeApply=DateUtil.dateToStr(applyJoinAssoc.getAppTime());
+
+            BeanUtils.copyProperties(applyJoinAssoc,applyJoinAssocVO);
+
+//            applyJoinAssocVO.setApplicant(userVO);
+            applyJoinAssocVO.setTimeApply(timeApply);
+            applyJoinAssocVOList.add(applyJoinAssocVO);
+
+        }
+        return applyJoinAssocVOList;
+    }
+
+    /**
+     * ApplyAssociation转称ApplyAssociationVO，增加字符串确认时间
+     * @param applyAssociationList
+     * @return
+     */
+    public List<ApplyAssociationVO> applyAssociation2ApplyAssociationVO(List<ApplyAssociation> applyAssociationList){
+        List<ApplyAssociationVO> applyAssociationVOList = new ArrayList<>();
+        for (ApplyAssociation applyAssociation:applyAssociationList){
+            ApplyAssociationVO applyAssociationVO = new ApplyAssociationVO();
+            BeanUtils.copyProperties(applyAssociation,applyAssociationVO);
+            applyAssociationVO.setDateTime(DateUtil.dateToStr(applyAssociation.getVerifyTime()));
+            switch (applyAssociation.getApplyStatus()){
+                case 0:
+                    applyAssociationVO.setStatus("未审核");
+                    break;
+                case 1:
+                    applyAssociationVO.setStatus("已审核通过");
+                    break;
+                case 2:
+                    applyAssociationVO.setStatus("已审核不通过");
+                    break;
+            }
+            applyAssociationVOList.add(applyAssociationVO);
+        }
+        return applyAssociationVOList;
     }
 
 

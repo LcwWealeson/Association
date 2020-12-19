@@ -15,4 +15,10 @@ public interface IStudentService {
     ServerResponse applyJoinEvent(int userId, int eventId);
 
     ServerResponse getCheckedEvent();
+
+    ServerResponse getApplyNewAssocByApplicantId(Integer applicantId);
+
+    ServerResponse getApplyJoinAssocByUserId(Integer applicantId);
+
+    ServerResponse getHasJoinedAssocAndNotice(Integer memberId);
 }

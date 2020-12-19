@@ -14,7 +14,8 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
-    
+
+    //自定义
     int updateRoleById(Integer id);
 
     User selectUserByName(String username);
@@ -23,7 +24,6 @@ public interface UserMapper {
 
     int updatePassword(int userId, String newPassword);
 
-    //自定义
     String getNameById(Integer userId);
 
     int updateRoleTo1ById(Integer adminId);

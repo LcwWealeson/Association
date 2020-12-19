@@ -22,7 +22,7 @@ public class CommonController {
 
     //用户注册
     @PostMapping("/register")
-    @ApiOperation(value = "用户注册",notes = "提交一个用户对象")
+    @ApiOperation(value = "用户注册，不提交id、role",notes = "提交一个用户对象，其他信息要满足，不提交id和role")
     public ServerResponse register(@ApiParam(name = "user",value = "用户实体",required = true)
                                    @RequestBody User user){
         return iCommonService.register(user);
@@ -30,7 +30,7 @@ public class CommonController {
 
     //用户登陆
     @PostMapping("/login")
-    @ApiOperation(value = "用户登陆",notes = "传入用户名和密码，用户名为username，密码为password")
+    @ApiOperation(value = "用户登陆,传入username和password",notes = "传入用户名和密码，用户名为username，密码为password")
     public ServerResponse login(@RequestBody JSONObject jsonObject){
         String username = jsonObject.getString("username");
         String password = jsonObject.getString("password");
@@ -39,7 +39,7 @@ public class CommonController {
 
     //用户信息修改
     @PostMapping("/changeInfo")
-    @ApiOperation(value = "个人信息修改",notes = "个人信息修改，前端应该只允许修改非关键的字段，不能自行修改id，用户名等等")
+    @ApiOperation(value = "个人信息修改，id和role不可以自己修改",notes = "个人信息修改，前端应该只允许修改非关键的字段，不能自行修改id，用户名等等")
     public ServerResponse changeInfo(@ApiParam(name = "user",value = "用户对象",required = true)
                                      @RequestBody User user){
         return iCommonService.changeInfo(user);

@@ -18,4 +18,8 @@ public interface ApplyAssociationMapper {
     int updateByPrimaryKey(ApplyAssociation record);
 
     List<ApplyAssociation> selectList(String assocName);
+
+    List<ApplyAssociation> getByApplicantId(Integer applicantId);
+
+    ApplyAssociation selectByAssocNameNotWith2(String assocName);
 }

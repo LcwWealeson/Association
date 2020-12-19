@@ -181,6 +181,12 @@
     where nickname like concat('%',#{nickname},'%')
   </select>
 
+  <select id="getNameById" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select username
+    from user
+    where id=#{userId}
+  </select>
+
   <update id="updatePassword">
     update user
     set password = #{newPassword,jdbcType=VARCHAR}

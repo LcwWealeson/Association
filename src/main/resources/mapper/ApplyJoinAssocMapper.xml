@@ -109,4 +109,26 @@
     set app_status = 2
     where id=#{applyJoinAssocId} and applicant_id=#{applicantId} and assoc_id=#{associationId}
   </update>
+<!--带社团名称的 Map-->
+  <resultMap id="BaseResultMapWithAssocName" type="com.example.association.vo.ApplyJoinAssocVO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="applicant_id" jdbcType="INTEGER" property="applicantId" />
+    <result column="assoc_id" jdbcType="INTEGER" property="assocId" />
+    <result column="app_status" jdbcType="INTEGER" property="appStatus" />
+    <result column="app_time" jdbcType="TIMESTAMP" property="appTime" />
+    <result column="assoc_name" jdbcType="INTEGER" property="assocName"/>
+  </resultMap>
+
+<!--  查找带有社团名称的记录-->
+  <select id="getByUserIdAndAssocId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select aja.id as id,applicant_id,assoc_id,app_status,app_time,assoc_name
+    from apply_join_assoc as aja,association as a
+    where applicant_id=#{applicantId,jdbcType=INTEGER} and aja.assoc_id=a.id
+  </select>
+
+  <select id="selectNotWith2" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
+    from apply_join_assoc
+    where applicant_id=#{userId,jdbcType=INTEGER} and assoc_id=#{associationId,jdbcType=INTEGER} and app_status != 2
+  </select>
 </mapper>
