@@ -4,11 +4,11 @@
   <resultMap id="BaseResultMap" type="com.example.association.pojo.ApplyParticipation">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="event_id" jdbcType="INTEGER" property="eventId" />
-    <result column="participant_id_" jdbcType="INTEGER" property="participantId" />
+    <result column="participant_id" jdbcType="INTEGER" property="participantId" />
     <result column="event_app_status" jdbcType="INTEGER" property="eventAppStatus" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, event_id, participant_id_, event_app_status
+    id, event_id, participant_id, event_app_status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -21,7 +21,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.association.pojo.ApplyParticipation">
-    insert into apply_participation (id, event_id, participant_id_, 
+    insert into apply_participation (id, event_id, participant_id, 
       event_app_status)
     values (#{id,jdbcType=INTEGER}, #{eventId,jdbcType=INTEGER}, #{participantId,jdbcType=INTEGER}, 
       #{eventAppStatus,jdbcType=INTEGER})
@@ -36,7 +36,7 @@
         event_id,
       </if>
       <if test="participantId != null">
-        participant_id_,
+        participant_id,
       </if>
       <if test="eventAppStatus != null">
         event_app_status,
@@ -64,7 +64,7 @@
         event_id = #{eventId,jdbcType=INTEGER},
       </if>
       <if test="participantId != null">
-        participant_id_ = #{participantId,jdbcType=INTEGER},
+        participant_id = #{participantId,jdbcType=INTEGER},
       </if>
       <if test="eventAppStatus != null">
         event_app_status = #{eventAppStatus,jdbcType=INTEGER},
@@ -75,7 +75,7 @@
   <update id="updateByPrimaryKey" parameterType="com.example.association.pojo.ApplyParticipation">
     update apply_participation
     set event_id = #{eventId,jdbcType=INTEGER},
-      participant_id_ = #{participantId,jdbcType=INTEGER},
+      participant_id = #{participantId,jdbcType=INTEGER},
       event_app_status = #{eventAppStatus,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
