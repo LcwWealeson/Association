@@ -326,7 +326,8 @@ public class AdminService implements IAdminService {
             applyParticipationMapper.updateStatusByIdTo2(id,eventId,participantId);
             return ServerResponse.createByErrorMessage("已过活动开始举办时间，无法允许此人参加活动！");
         }
-        return ServerResponse.createBySuccessMessage("已允许ID为"+participantId+"的用户参加此活动");
+        return rowCheck!=0?ServerResponse.createBySuccessMessage("已允许"+rowCheck+"名用户参加此活动ID为"+participantId)
+                :ServerResponse.createBySuccessMessage("输入数据有误，无法修改记录！修改"+rowCheck+"行！");
     }
 
     /**
