@@ -61,11 +61,11 @@
         可以设置为somepck.domainName，那么会自动把domainName类再放到somepck包里面；
         -->
 
-        <table tableName="user" domainObjectName="User"
-               enableCountByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               enableUpdateByExample="false"/>
+<!--        <table tableName="user" domainObjectName="User"-->
+<!--               enableCountByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               enableUpdateByExample="false"/>-->
 
 <!--        <table tableName="role" domainObjectName="Role"-->
 <!--               enableCountByExample="false"-->
@@ -133,11 +133,11 @@
 <!--               enableSelectByExample="false"-->
 <!--               enableUpdateByExample="false"/>-->
 <!--&lt;!&ndash;   申请一个社团     &ndash;&gt;-->
-<!--        <table tableName="apply_association" domainObjectName="ApplyAssociation"-->
-<!--               enableCountByExample="false"-->
-<!--               enableDeleteByExample="false"-->
-<!--               enableSelectByExample="false"-->
-<!--               enableUpdateByExample="false"/>-->
+        <table tableName="apply_association" domainObjectName="ApplyAssociation"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false"/>
 
 
 <!--        <table tableName="book_info" domainObjectName="BookInfo">-->
