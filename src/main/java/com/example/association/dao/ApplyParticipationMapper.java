@@ -26,4 +26,6 @@ public interface ApplyParticipationMapper {
     List<ApplyParticipation> getAllApplyParticipantsByEventId(Integer eventId);
 
     ApplyParticipation selectNotWith2(int userId, int eventId);
+
+    List<ApplyParticipation> getAllByParticipantId(Integer participantId);
 }

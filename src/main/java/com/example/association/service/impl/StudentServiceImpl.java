@@ -37,6 +37,9 @@ public class StudentServiceImpl implements IStudentService {
 
     @Autowired
     NoticeMapper noticeMapper;
+
+    @Autowired
+    UserMapper userMapper;
     @Override
     public ServerResponse apply(ApplyAssociation applyAssociation) {
 
@@ -91,6 +94,12 @@ public class StudentServiceImpl implements IStudentService {
         return ServerResponse.createBySuccessMessage("申请成功");
     }
 
+    /**
+     * 申请参加活动
+     * @param userId
+     * @param eventId
+     * @return
+     */
     @Override
     public ServerResponse applyJoinEvent(int userId, int eventId) {
         if (applyParticipationMapper.selectNotWith2(userId,eventId)!=null){
@@ -145,6 +154,81 @@ public class StudentServiceImpl implements IStudentService {
         return assocMemberVOList;
     }
 
+    /**
+     * 查看所有申请参加活动的申请状态，包含审核和未审核
+     * @param participantId
+     * @return
+     */
+    @Override
+    public ServerResponse getApplyJoinEventByUserId(Integer participantId) {
+
+        List<ApplyParticipationVO> applyParticipationVOList = applyParticipation2ApplyParticipationVO(applyParticipationMapper.getAllByParticipantId(participantId));
+        int size = applyParticipationVOList.size();
+        return size==0?ServerResponse.createBySuccessMessage("您还未报名过任何活动！")
+                :ServerResponse.createBySuccessMessage("您报名参加过的活动有"+size+"个",applyParticipationVOList);
+    }
+
+    /**
+     * ApplyParticipation转化成ApplyParticipationVO，增加UserVO，也就是对应的用户详细信息
+     * @param applyParticipationList
+     * @return
+     */
+    public List<ApplyParticipationVO> applyParticipation2ApplyParticipationVO(List<ApplyParticipation> applyParticipationList){
+        List<ApplyParticipationVO> applyParticipationVOList = new ArrayList<>();
+        for (ApplyParticipation participation :applyParticipationList){
+            ApplyParticipationVO participationVO = new ApplyParticipationVO();
+
+            User participant = userMapper.selectByPrimaryKey(participation.getParticipantId());
+            UserVO userVO = user2UserVO(participant);
+            switch (participation.getEventAppStatus()){
+                case 0:
+                    participationVO.setStatusParticipate("未审核");
+                    break;
+                case 1:
+                    participationVO.setStatusParticipate("已审核通过");
+                    break;
+                case 2:
+                    participationVO.setStatusParticipate("已审核不通过");
+                    break;
+            }
+
+            BeanUtils.copyProperties(participation,participationVO);
+            participationVO.setParticipant(userVO);
+            applyParticipationVOList.add(participationVO);
+        }
+        return applyParticipationVOList;
+    }
+
+    /**
+     * 将User转换成UserVO，添加学院专业班级
+     * @param user
+     * @return
+     */
+    public UserVO user2UserVO(User user){
+        UserVO userVO = new UserVO();
+//        String college = academyMapper.selectByPrimaryKey(user.getCollege()).getAcademyName();
+//        String major = majorMapper.selectByPrimaryKey(user.getMajor()).getMajorName();
+//        Integer classNumber = classesMapper.selectByPrimaryKey(user.getClassFrom()).getClassNumber();
+        BeanUtils.copyProperties(user,userVO);
+//        userVO.setCollegeStr(college);
+//        userVO.setMajorStr(major);
+//        userVO.setClassNumber(classNumber);
+        userVO.setGenderStr(user.getGender()==0?"男":"女");
+        switch (user.getRole()){
+            case 1:
+                userVO.setRoleStr("学生");
+                break;
+            case 2:
+                userVO.setRoleStr("社团负责人");
+                break;
+            case 3:
+                userVO.setRoleStr("超级管理员");
+                break;
+        }
+        return userVO;
+    }
+
+
 
     /**
      * 查看所有申请加入社团的申请状态，包含审核未审核
@@ -153,7 +237,8 @@ public class StudentServiceImpl implements IStudentService {
      */
     @Override
     public ServerResponse getApplyJoinAssocByUserId(Integer applicantId) {
-        List<ApplyJoinAssocVO> applyJoinAssocVO = applyJoinAssocMapper.getByUserIdAndAssocId(applicantId);
+        List<ApplyJoinAssoc> applyJoinAssoc = applyJoinAssocMapper.getByUserIdAndAssocId(applicantId);
+        List<ApplyJoinAssocVO> applyJoinAssocVO = applyJoinAssoc2ApplyJoinAssocVO(applyJoinAssoc);
         for (ApplyJoinAssocVO a:applyJoinAssocVO){
             a.setTimeApply(DateUtil.dateToStr(a.getAppTime()));
             switch (a.getAppStatus()){

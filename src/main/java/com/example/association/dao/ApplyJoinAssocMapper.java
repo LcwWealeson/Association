@@ -24,7 +24,7 @@ public interface ApplyJoinAssocMapper {
 
     int checkApplyJoinTo2(Integer applyJoinAssocId, Integer applicantId, Integer associationId);
 
-    List<ApplyJoinAssocVO> getByUserIdAndAssocId(Integer applicantId);
+    List<ApplyJoinAssoc> getByUserIdAndAssocId(Integer applicantId);
 
     ApplyJoinAssoc selectNotWith2(int userId, int associationId);
 }

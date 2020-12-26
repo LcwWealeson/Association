@@ -12,7 +12,7 @@
     id, applicant_id, assoc_id, app_status, app_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from apply_join_assoc
     where id = #{id,jdbcType=INTEGER}
@@ -91,7 +91,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-<!--  自定义mapper-->
+  <!--  自定义mapper-->
   <select id="getApplyJoinAssocList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select *
     from apply_join_assoc
@@ -109,7 +109,7 @@
     set app_status = 2
     where id=#{applyJoinAssocId} and applicant_id=#{applicantId} and assoc_id=#{associationId}
   </update>
-<!--带社团名称的 Map-->
+  <!--带社团名称的 Map-->
   <resultMap id="BaseResultMapWithAssocName" type="com.example.association.vo.ApplyJoinAssocVO">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="applicant_id" jdbcType="INTEGER" property="applicantId" />
@@ -119,7 +119,7 @@
     <result column="assoc_name" jdbcType="INTEGER" property="assocName"/>
   </resultMap>
 
-<!--  查找带有社团名称的记录-->
+  <!--  查找带有社团名称的记录-->
   <select id="getByUserIdAndAssocId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select aja.id as id,applicant_id,assoc_id,app_status,app_time,assoc_name
     from apply_join_assoc as aja,association as a
