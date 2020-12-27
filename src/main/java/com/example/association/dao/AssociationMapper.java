@@ -30,4 +30,6 @@ public interface AssociationMapper {
     Association selectByAssocName(String assocName);
 
     Integer selectAssociationCountByadminId(Integer adminId);
+
+    String getNameById(Integer associationId);
 }

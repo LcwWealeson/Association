@@ -171,4 +171,10 @@
     FROM association
     WHERE adminId=#{adminId};
   </select>
+
+  <select id="getNameById" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select assoc_name
+    from association
+    where id = #{associationId,jdbcType=INTEGER}
+  </select>
 </mapper>

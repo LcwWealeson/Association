@@ -241,6 +241,8 @@ public class StudentServiceImpl implements IStudentService {
         List<ApplyJoinAssocVO> applyJoinAssocVO = applyJoinAssoc2ApplyJoinAssocVO(applyJoinAssoc);
         for (ApplyJoinAssocVO a:applyJoinAssocVO){
             a.setTimeApply(DateUtil.dateToStr(a.getAppTime()));
+            a.setAssocName(associationMapper.getNameById(a.getAssocId()));
+            a.setApplicant(userMapper.selectByPrimaryKey(applicantId));
             switch (a.getAppStatus()){
                 case 0:
                     a.setStatus("未审核");
