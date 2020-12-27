@@ -52,9 +52,9 @@ public class StudentServiceImpl implements IStudentService {
         int resultRow = applyAssociationMapper.insert(applyAssociation);
         applyAssociation.setAssocName("0");
         if(resultRow==0){
-            return ServerResponse.createByErrorMessage("插入失败，成功提交社团申请");
+            return ServerResponse.createByErrorMessage("插入失败，提交社团申请失败");
         }
-        return ServerResponse.createBySuccessMessage("插入成功");
+        return ServerResponse.createBySuccessMessage("成功提交社团申请");
     }
 
     @Override
