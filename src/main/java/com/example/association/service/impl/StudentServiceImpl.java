@@ -49,7 +49,7 @@ public class StudentServiceImpl implements IStudentService {
         }else if (applyAssociationMapper.selectByAssocNameNotWith2(applyAssociation.getAssocName())!=null){
             return ServerResponse.createBySuccessMessage("您已提交申请成立该社团，请不要重复提交！请等待审核或查看审核该申请的审核状态！");
         }
-        int resultRow = applyAssociationMapper.insert(applyAssociation);
+        int resultRow = applyAssociationMapper.insertSelective(applyAssociation);
         applyAssociation.setAssocName("0");
         if(resultRow==0){
             return ServerResponse.createByErrorMessage("插入失败，提交社团申请失败");
