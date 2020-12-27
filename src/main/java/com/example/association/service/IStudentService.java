@@ -21,4 +21,6 @@ public interface IStudentService {
     ServerResponse getApplyJoinAssocByUserId(Integer applicantId);
 
     ServerResponse getHasJoinedAssocAndNotice(Integer memberId);
+
+    ServerResponse getApplyJoinEventByUserId(Integer participantId);
 }

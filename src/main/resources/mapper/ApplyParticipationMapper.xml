@@ -11,7 +11,7 @@
     id, event_id, participant_id, event_app_status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from apply_participation
     where id = #{id,jdbcType=INTEGER}
@@ -80,7 +80,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-<!--  自定义mapper-->
+  <!--  自定义mapper-->
   <update id="updateStatusByIdTo1" parameterType="java.lang.Integer">
     update apply_participation
     set event_app_status = 1
@@ -109,5 +109,11 @@
     select *
     from apply_participation
     where participant_id=#{userId,jdbcType=INTEGER} and event_id=#{eventId,jdbcType=INTEGER} and event_app_status !=2
+  </select>
+
+  <select id="getAllByParticipantId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
+    from apply_participation
+    where participant_id=#{participantId,jdbcType=INTEGER}
   </select>
 </mapper>
