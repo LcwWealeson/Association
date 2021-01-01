@@ -16,4 +16,6 @@ public interface ISuperAdminService {
     ServerResponse changePassword(int userId,String newPassword);
 
     ServerResponse removeAssociation(Integer associationId);
+
+    ServerResponse getUsersListWithoutPwd();
 }

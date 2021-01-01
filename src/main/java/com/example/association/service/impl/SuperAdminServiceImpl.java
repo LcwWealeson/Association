@@ -8,6 +8,7 @@ import com.example.association.vo.ApplyEventVO;
 import com.example.association.common.ServerResponse;
 import com.example.association.utils.DateUtil;
 import com.example.association.utils.MD5Util;
+import com.example.association.vo.UserVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,14 @@ public class SuperAdminServiceImpl implements ISuperAdminService {
     @Autowired
     AssocMemberMapper assocMemberMapper;
 
+    @Autowired
+    AcademyMapper academyMapper;
+
+    @Autowired
+    MajorMapper majorMapper;
+
+    @Autowired
+    ClassesMapper classesMapper;
 
     @Override
     public ServerResponse checkApplyAssociation(int applyId, int adminId, int operation) {
@@ -77,6 +86,7 @@ public class SuperAdminServiceImpl implements ISuperAdminService {
         return ServerResponse.createBySuccessMessage("查询成功",applyAssociationVOS);
     }
 
+
     @Override
     public ServerResponse getEventCheckList(String eventName, String assocName, String applicant) {
         ApplyEvent applyEvent = new ApplyEvent();
@@ -93,6 +103,12 @@ public class SuperAdminServiceImpl implements ISuperAdminService {
         return ServerResponse.createBySuccessMessage("查询成功",applyEvent2ApplyEventVO(applyEvents));
     }
 
+    /**
+     * 审核活动的申请
+     * @param eventId
+     * @param operation
+     * @return
+     */
     @Override
     public ServerResponse checkApplyEvent(int eventId, int operation) {
         ApplyEvent applyEvent = applyEventMapper.selectByPrimaryKey(eventId);
@@ -110,6 +126,22 @@ public class SuperAdminServiceImpl implements ISuperAdminService {
         return ServerResponse.createByErrorMessage("请求失败");
     }
 
+    /**
+     * 获取所有用户的信息，除了密码
+     * @return
+     */
+    @Override
+    public ServerResponse getUsersListWithoutPwd() {
+        return ServerResponse.createBySuccessMessage("获取所有用户信息列表，包括超级管理员自己",
+                userList2UserVOList(userMapper.getUsersListWithoutPwd()));
+    }
+
+    /**
+     * 修改某个用户的密码，一般修改为一个默认的重置密码
+     * @param userId
+     * @param newPassword
+     * @return
+     */
     @Override
     public ServerResponse changePassword(int userId,String newPassword) {
         int resultRow = userMapper.updatePassword(userId, MD5Util.getMD5(newPassword));
@@ -119,6 +151,40 @@ public class SuperAdminServiceImpl implements ISuperAdminService {
         return ServerResponse.createBySuccessMessage("修改成功");
     }
 
+    /**
+     * User转称UserVO
+     * @param userList
+     * @return
+     */
+    public List<UserVO> userList2UserVOList(List<User> userList){
+        List<UserVO> userVOList = new ArrayList<>();
+        for (User user:userList){
+            UserVO userVO = new UserVO();
+            String college = academyMapper.selectByPrimaryKey(user.getCollege()).getAcademyName();
+            String major = majorMapper.selectByPrimaryKey(user.getMajor()).getMajorName();
+            Integer classNumber = classesMapper.selectByPrimaryKey(user.getClassFrom()).getClassNumber();
+            String gender = user.getGender()==0?"男":"女";
+            BeanUtils.copyProperties(user,userVO);
+            userVO.setCollegeStr(college);
+            userVO.setMajorStr(major);
+            userVO.setClassNumber(classNumber);
+            userVO.setGenderStr(gender);
+            switch (user.getRole()){
+                case 1:
+                    userVO.setRoleStr("学生");
+                    break;
+                case 2:
+                    userVO.setRoleStr("社团负责人");
+                    break;
+                case 3:
+                    userVO.setRoleStr("超级管理员");
+                    break;
+            }
+
+            userVOList.add(userVO);
+        }
+        return userVOList;
+    }
 
     /**
      * 删除某个社团

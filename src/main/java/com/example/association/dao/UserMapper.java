@@ -2,6 +2,8 @@ package com.example.association.dao;
 
 import com.example.association.pojo.User;
 
+import java.util.List;
+
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -27,4 +29,6 @@ public interface UserMapper {
     String getNameById(Integer userId);
 
     int updateRoleTo1ById(Integer adminId);
+
+    List<User> getUsersListWithoutPwd();
 }
