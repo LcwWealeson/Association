@@ -14,6 +14,20 @@
     <result column="major" jdbcType="INTEGER" property="major" />
     <result column="class_from" jdbcType="INTEGER" property="classFrom" />
   </resultMap>
+
+  <resultMap id="BaseResultMapWithoutPwd" type="com.example.association.pojo.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+<!--    <result column="password" jdbcType="VARCHAR" property="password" />-->
+    <result column="gender" jdbcType="INTEGER" property="gender" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="role" jdbcType="INTEGER" property="role" />
+    <result column="college" jdbcType="INTEGER" property="college" />
+    <result column="major" jdbcType="INTEGER" property="major" />
+    <result column="class_from" jdbcType="INTEGER" property="classFrom" />
+  </resultMap>
   <sql id="Base_Column_List">
     id, username, password, gender, nickname, image, introduction, role, college, major, 
     class_from
@@ -198,4 +212,15 @@
     set role = 1
     where id = #{adminId,jdbcType=INTEGER}
   </update>
+
+  <sql id="Base_Column_List_WithoutPwd">
+    id, username, gender, nickname, image, introduction, role, college, major,
+    class_from
+  </sql>
+
+  <select id="getUsersListWithoutPwd" resultMap="BaseResultMapWithoutPwd">
+    select
+    <include refid="Base_Column_List_WithoutPwd" />
+    from user
+  </select>
 </mapper>

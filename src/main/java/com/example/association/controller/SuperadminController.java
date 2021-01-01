@@ -50,6 +50,13 @@ public class SuperadminController {
         return iSuperAdminService.checkApplyEvent(eventId,operation);
     }
 
+    //查看所有用户信息，但没有用户密码
+    @GetMapping("getUsersListWithoutPwd")
+    @ApiOperation(value = "查看所有用户信息，但没有用户密码",notes = "不用传入参数")
+    public ServerResponse getUsersListWithoutPwd(){
+        return iSuperAdminService.getUsersListWithoutPwd();
+    }
+
     //修改密码
     @GetMapping("/changePassword")
     @ApiOperation(value = "修改密码",notes = "需要传入用户id和新密码newPassword两个参数")
