@@ -118,7 +118,7 @@ public class SuperAdminServiceImpl implements ISuperAdminService {
             applyEventMapper.updateByPrimaryKey(applyEvent);
             return ServerResponse.createBySuccessMessage("审核通过");
         }  if(operation==2){
-            applyEvent.setEventStatus(1);
+            applyEvent.setEventStatus(2);
             applyEvent.setVerifyTime(new Date());
             applyEventMapper.updateByPrimaryKey(applyEvent);
             return ServerResponse.createBySuccessMessage("审核失败");
