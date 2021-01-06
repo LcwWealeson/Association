@@ -50,11 +50,11 @@ public class StudentServiceImpl implements IStudentService {
             return ServerResponse.createBySuccessMessage("您已提交申请成立该社团，请不要重复提交！请等待审核或查看审核该申请的审核状态！");
         }
         int resultRow = applyAssociationMapper.insertSelective(applyAssociation);
-        applyAssociation.setAssocName("0");
+        applyAssociation.setApplyStatus(0);
         if(resultRow==0){
             return ServerResponse.createByErrorMessage("插入失败，提交社团申请失败");
         }
-        return ServerResponse.createBySuccessMessage("成功提交社团申请");
+        return ServerResponse.createBySuccessMessage("成功提交社团申请，社团名字为"+applyAssociation.getAssocName());
     }
 
     @Override

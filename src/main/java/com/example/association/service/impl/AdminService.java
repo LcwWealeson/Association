@@ -94,6 +94,12 @@ public class AdminService implements IAdminService {
         String dateEndStr = DateUtil.dateToStr(applyEventInfor.getEndTime());
         Date dateStart = DateUtil.strToDate(dateStartStr);
         Date dateEnd = DateUtil.strToDate(dateEndStr);
+
+        //如果申请活动的开始时间是在今天时间之前，那就不可以申请
+        if (new Date().compareTo(dateStart)>0){
+            return ServerResponse.createBySuccessMessage("申请活动的开始时间比现在早，不可以通过申请！");
+        }
+
         //获取已经申请并且没有被拒绝通过的活动
         List<ApplyEvent> applyEventList = applyEventMapper.selectByEventName(applyEventInfor.getEventName());
         for (ApplyEvent applyEvent:applyEventList){
@@ -298,9 +304,7 @@ public class AdminService implements IAdminService {
     public ServerResponse checkApplyJoinTo2(Integer applyJoinAssocId, Integer applicantId, Integer associationId) {
         int rowCheck=0;
         if (applyJoinAssocId!=null&&applicantId!=null&&associationId!=null){
-            if (assocMemberMapper.getByMemberIdAndAssocId(applicantId,associationId)==null){
-                assocMemberMapper.insertSelective(new AssocMember(applicantId,associationId));
-            }else {
+            if (assocMemberMapper.getByMemberIdAndAssocId(applicantId,associationId)!=null){
                 return ServerResponse.createBySuccessMessage("此人已在该社团中！请勿重复申请加入该社团！");
             }
             rowCheck = applyJoinAssocMapper.checkApplyJoinTo2(applyJoinAssocId,applicantId,associationId);
@@ -510,6 +514,22 @@ public class AdminService implements IAdminService {
             String timeEnd;
             String timeApply;
             String timeVerify;
+            String status="未审核";
+            Boolean disable=true;
+
+            switch (applyEvent.getEventStatus()){
+                case 0:
+                    status = "未审核";
+                    disable=false;
+                    break;
+                case 1:
+                    status = "已成功通过审核";
+                    break;
+                case 2:
+                    status = "审核不通过";
+                    disable=false;
+                    break;
+            }
 
             ApplyEventVO applyEventVO = new ApplyEventVO();
 
@@ -524,6 +544,8 @@ public class AdminService implements IAdminService {
             applyEventVO.setTimeEnd(timeEnd);
             applyEventVO.setTimeApply(timeApply);
             applyEventVO.setTimeVerify(timeVerify);
+            applyEventVO.setStatus(status);
+            applyEventVO.setDisable(disable);
             applyEventVOList.add(applyEventVO);
 
         }
